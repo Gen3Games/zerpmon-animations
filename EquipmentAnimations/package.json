@@ -1,0 +1,26 @@
+{
+  "name": "spritesheet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "free-tex-packer-cli": "^0.3.0",
+    "free-tex-packer-core": "^0.3.4",
+    "gifsicle": "^5.2.1",
+    "imagemin": "^7.0.0",
+    "imagemin-optipng": "^8.0.0",
+    "imagemin-pngquant": "^7.0.0",
+    "node-fetch": "^2.7.0",
+    "optipng-bin": "^9.0.0",
+    "sharp": "^0.33.2"
+  },
+  "devDependencies": {
+    "compress-images": "^2.0.5"
+  }
+}
