@@ -2,10 +2,10 @@ const fs = require('fs').promises;
 const path = require('path');
 
 async function renameFiles() {
-    const folders = ['Attack/Flying/L', 'Attack/Flying/R']; // List of folders
+    const folders = ['Images/Steel/L', 'Images/Steel/R']; // List of folders
     const prefixMap = {
-        'Attack/Flying/L': 'LongRangeL',
-        'Attack/Flying/R': 'LongRangeR'
+        'Images/Steel/L': 'LongRangeL',
+        'Images/Steel/R': 'LongRangeR'
     };
 
     for (const folder of folders) {

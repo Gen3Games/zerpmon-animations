@@ -14,8 +14,8 @@ let options = {
     removeFileExtension: false, //default
     prependFolderName: false,   //defualt
     base64Export: false,    //defualt
-    tinify: true,  //defualt
-    tinifyKey: "mZmdM3QSN180BlBXDBdkh5jK5Z1LsQ7J",  //defualt
+    // tinify: true,  //defualt
+    // tinifyKey: "mZmdM3QSN180BlBXDBdkh5jK5Z1LsQ7J",  //defualt
     scale: 1,   //defualt
     // filter: none //default
     width: 5000,
@@ -33,7 +33,7 @@ let options = {
     packerMethod: "BestLongSideFit",
 };
 
-const path = ["Attack/Flying/L", "Attack/Flying/R"]
+const path = ["Images/Steel/L", "Images/Steel/R"]
 
 let images = [];
 

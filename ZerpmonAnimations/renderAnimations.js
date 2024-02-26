@@ -90,11 +90,6 @@ async function uploadToCloudFlareR2(nodeScriptPath, zerpmon_id) {
 }
 
 async function main() {
-    if (process.argv.slice(2).length < 2) {
-        console.error('Usage: node renderAnimations.js <animationName> <imagePath>');
-        console.error('Usage Eg : node renderAnimations.js playerWalking ./player.png');
-        process.exit(1);
-    }
 
     const blenderAnimationFiles = ["ZerpmonCardAppearanceL", "ZerpmonCardAppearanceR", "ZerpmonCardDestructionL", "ZerpmonCardDestructionR"]
     const [animationName, imageFilePath] = process.argv.slice(2);
