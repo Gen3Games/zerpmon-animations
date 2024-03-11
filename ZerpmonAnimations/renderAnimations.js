@@ -158,9 +158,9 @@ async function main() {
           "uploadToCloudFlareR2.js",
           file.slice(0, -4)
         );
-        fs.appendFileSync(successLogFilePath, `${file.slice(0, -4)}\n`);
+        await fs.appendFile(successLogFilePath, `${file.slice(0, -4)}\n`);
       } catch (error) {
-        fs.appendFileSync(errroLogFilePath, `${file.slice(0, -4)}\n`);
+        await fs.appendFile(errroLogFilePath, `${file.slice(0, -4)}\n`);
       }
     }
 
