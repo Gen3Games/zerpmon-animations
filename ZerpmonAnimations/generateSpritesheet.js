@@ -24,8 +24,8 @@ let options = {
     tinifyKey: "mZmdM3QSN180BlBXDBdkh5jK5Z1LsQ7J",  //defualt
     scale: 1,   //defualt
     // filter: none //default
-    width: 3400,
-    height: 3400,
+    width: 4000,
+    height: 4000,
     fixedSize: false,   //default
     powerOfTwo: false,  //default
     padding: 0,     //default

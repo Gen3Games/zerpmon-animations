@@ -91,7 +91,7 @@ async function uploadToCloudFlareR2(nodeScriptPath, zerpmon_id) {
 
 async function main() {
 
-    const blenderAnimationFiles = ["ZerpmonCardAppearanceL", "ZerpmonCardAppearanceR", "ZerpmonCardDestructionL", "ZerpmonCardDestructionR"]
+    const blenderAnimationFiles = ["ZerpmonCardAppearanceL", "ZerpmonCardAppearanceR", "ZerpmonCardDestructionL", "ZerpmonCardDestructionR", "ZerpmonJiggleL","ZerpmonJiggleR","ZerpmonDamageL","ZerpmonDamageR"]
     const [animationName, imageFilePath] = process.argv.slice(2);
     const pythonScriptPath = 'generateImageSequence.py';
     const directoryPath = `blenderAnimations/`;
