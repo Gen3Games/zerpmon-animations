@@ -31,10 +31,14 @@ async function fetchAndDownloadImage(apiUrl, destinationFolder, headers) {
 
                 const filename = `${item.nft_id}.png`;
                 const destinationPath = path.join(destinationFolder, filename);
-                console.log(imageUrl);
-                
-                // Download image
-                await downloadImage(imageUrl, destinationPath);
+
+                // Check if the file already exists in the destination folder
+                if (!fs.existsSync(destinationPath)) {
+                    // Download image only if it doesn't exist
+                    await downloadImage(imageUrl, destinationPath);
+                } else {
+                    console.log('Image already exists, skipping:', destinationPath);
+                }
             } catch (error) {
                 console.error("Error fetching IPFS data:", error);
             }

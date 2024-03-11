@@ -18,8 +18,8 @@ let options = {
     // tinifyKey: "mZmdM3QSN180BlBXDBdkh5jK5Z1LsQ7J",  //defualt
     scale: 1,   //defualt
     // filter: none //default
-    width: 5000,
-    height: 5000,
+    width: 2000,
+    height: 2000,
     fixedSize: false,   //default
     powerOfTwo: false,  //default
     padding: 0,     //default
@@ -33,7 +33,7 @@ let options = {
     packerMethod: "BestLongSideFit",
 };
 
-const path = ["Images/Steel/L", "Images/Steel/R"]
+const path = ["Images/Miss/L", "Images/Miss/R"]
 
 let images = [];
 
