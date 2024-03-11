@@ -113,8 +113,8 @@ async function main() {
   errroLogFilePath = "./logs/all/error.log";
   successLogFilePath = "./logs/all/success.log";
 
-  fs.openSync(errroLogFilePath, "w");
-  fs.openSync(successLogFilePath, "w");
+  await fs.open(errroLogFilePath, "w");
+  await fs.open(successLogFilePath, "w");
 
   const blenderAnimationFiles = [
     "ZerpmonCardAppearanceL",
