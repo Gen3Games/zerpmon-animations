@@ -3,6 +3,11 @@ import os
 import sys
 import subprocess
 
+bpy.context.scene.render.engine = 'CYCLES'
+bpy.context.preferences.addons['cycles'].preferences.compute_device_type = 'CUDA'  # or 'OPENCL'
+bpy.context.scene.cycles.device = 'GPU'
+print(bpy.context.preferences.addons['cycles'].preferences.get_devices())
+
 # Check if there are command line arguments
 if len(sys.argv) > 5:
     # Get the image path from the command line arguments
