@@ -14,19 +14,21 @@
    mkdir ZerpmonImages imageChunks logs/all logs/download pngSequences Spritesheets ZerpmonImages
    ```
 
-4. install dependencies
+4. add tinifyKey in generateSpritesheet
+   
+5. install dependencies
 
    ```sh
    npm i
    ```
 
-5. download the nft list
+6. download the nft list
 
    ```sh
    node downloadImage.js
    ```
 
-6. run the animations and save in the r2 and images
+7. run the animations and save in the r2 and images
    ```sh
    node renderAnimations.js
    ```
