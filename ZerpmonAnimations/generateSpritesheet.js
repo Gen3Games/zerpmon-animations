@@ -21,7 +21,7 @@ let options = {
   prependFolderName: false, //defualt
   base64Export: false, //defualt
   tinify: true, //defualt
-  tinifyKey: "HgMHbnBKj5x2Fq7GH2TPcKJSRDwbMdy9", //defualt
+  tinifyKey: "XXXXXXXXXXXXXXXXXXXXXX", //defualt
   scale: 1, //defualt
   // filter: none //default
   width: 4000,
