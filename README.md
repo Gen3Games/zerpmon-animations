@@ -11,10 +11,10 @@
 3. create folder structure
 
    ```sh
-   mkdir ZerpmonImages imageChunks logs/all logs/download pngSequences Spritesheets ZerpmonImages
+   mkdir -p ZerpmonImages imageChunks logs/all logs/download pngSequences Spritesheets ZerpmonImages
    ```
 
-4. add tinifyKey in generateSpritesheet
+4. add tinifyKey in generateSpritesheet.js
    
 5. install dependencies
 
