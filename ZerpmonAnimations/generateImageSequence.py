@@ -6,7 +6,12 @@ import subprocess
 bpy.context.scene.render.engine = 'CYCLES'
 bpy.context.preferences.addons['cycles'].preferences.compute_device_type = 'CUDA'  # or 'OPENCL'
 bpy.context.scene.cycles.device = 'GPU'
-print(bpy.context.preferences.addons['cycles'].preferences.get_devices())
+# print(bpy.context.preferences.addons['cycles'].preferences.get_devices())
+
+for device in bpy.context.preferences.addons['cycles'].preferences.devices:
+    if device.type == 'CUDA':
+        device.use = True
+
 
 # Check if there are command line arguments
 if len(sys.argv) > 5:
