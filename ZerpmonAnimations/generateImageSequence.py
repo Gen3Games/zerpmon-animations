@@ -4,21 +4,21 @@ import sys
 import subprocess
 
 bpy.context.scene.render.engine = 'CYCLES'
-bpy.context.preferences.addons['cycles'].preferences.compute_device_type = 'CUDA'  # or 'OPENCL'
-bpy.context.scene.cycles.device = 'GPU'
-# print(bpy.context.preferences.addons['cycles'].preferences.get_devices())
+bpy.context.preferences.addons['cycles'].preferences.compute_device_type = 'CUDA'
+bpy.context.preferences.addons['cycles'].preferences.refresh_devices()
 
 for device in bpy.context.preferences.addons['cycles'].preferences.devices:
     if device.type == 'CUDA':
         device.use = True
 
+bpy.context.scene.cycles.device = 'GPU'
 
 # Check if there are command line arguments
-if len(sys.argv) > 5:
+if len(sys.argv) > 6:
     # Get the image path from the command line arguments
-    image_path = sys.argv[5]
-    animation_name = sys.argv[6]
-    image_name = sys.argv[7]
+    image_path = sys.argv[6]
+    animation_name = sys.argv[7]
+    image_name = sys.argv[8]
 
     # Find the node and set the image
     node = bpy.data.materials['ZerpmonRDisIn'].node_tree.nodes["Image Texture"]

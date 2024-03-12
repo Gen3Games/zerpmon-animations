@@ -11,6 +11,7 @@ async function renderBlenderAnimation(
   return new Promise((resolve, reject) => {
     const renderAnimation = spawn("blender", [
       "-b",
+      "-noaudio",
       blenderFilePath,
       "-P",
       pythonScriptPath,
