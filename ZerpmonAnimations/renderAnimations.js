@@ -5,9 +5,11 @@ const fs = require('fs').promises;
 async function renderBlenderAnimation(blenderFilePath, pythonScriptPath, imageFilePath, animationName, imageName) {
   return new Promise((resolve, reject) => {
     const renderAnimation = spawn('blender', [
-      '-b',
       '-noaudio',
+      '-b',
       blenderFilePath,
+      '-E',
+      'CYCLES',
       '-P',
       pythonScriptPath,
       imageFilePath,

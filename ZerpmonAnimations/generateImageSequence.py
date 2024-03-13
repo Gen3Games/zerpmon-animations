@@ -7,7 +7,10 @@ bpy.context.scene.render.engine = 'CYCLES'
 bpy.context.preferences.addons['cycles'].preferences.compute_device_type = 'CUDA'
 bpy.context.preferences.addons['cycles'].preferences.refresh_devices()
 
+print(bpy.context.preferences.addons['cycles'])
+
 for device in bpy.context.preferences.addons['cycles'].preferences.devices:
+    print(device)
     if device.type == 'CUDA':
         device.use = True
 
@@ -16,9 +19,13 @@ bpy.context.scene.cycles.device = 'GPU'
 # Check if there are command line arguments
 if len(sys.argv) > 6:
     # Get the image path from the command line arguments
-    image_path = sys.argv[6]
-    animation_name = sys.argv[7]
-    image_name = sys.argv[8]
+    # image_path = sys.argv[6]
+    # animation_name = sys.argv[7]
+    # image_name = sys.argv[8]
+
+    image_path = sys.argv[8]
+    animation_name = sys.argv[9]
+    image_name = sys.argv[10]
 
     # Find the node and set the image
     node = bpy.data.materials['ZerpmonRDisIn'].node_tree.nodes["Image Texture"]
