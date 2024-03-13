@@ -16,6 +16,13 @@ async function fetchAndDownloadImage(destinationFolder, chunkfilePath) {
   }
   fs.mkdirSync(destinationFolder);
 
+  LogFilePathForDownload = path.resolve(__dirname, "./logs/download");
+
+  // create log directories if they don't exist
+  if (!fs.existsSync(LogFilePathForDownload)) {
+    fs.mkdirSync(LogFilePathForDownload, { recursive: true });
+  }
+
   const errroLogFilePath = path.resolve(__dirname, "./logs/download/error.log");
   const successLogFilePath = path.resolve(
     __dirname,

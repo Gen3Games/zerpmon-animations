@@ -1,6 +1,7 @@
 const FormData = require('form-data');
 const fetch = require('node-fetch');
 const fs = require('fs');
+const path = require('path');
 
 const args = process.argv.slice(2);
 

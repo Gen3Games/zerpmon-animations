@@ -118,14 +118,14 @@ async function main() {
   errorLogFilePath = path.resolve(__dirname, "./logs/all/error.log");
   successLogFilePath = path.resolve(__dirname, "./logs/all/success.log");
 
-  LogFilePath = path.resolve(__dirname, "./logs");
+
   LogFilePathForRenderAnimation = path.resolve(__dirname, "./logs/all");
 
   spritesheetsFilePath = path.resolve(__dirname, "./Spritesheets");
   pngSequencesFilePath = path.resolve(__dirname, "./pngSequences");
 
   // create log directories if they don't exist
-  if (!fsO.existsSync(LogFilePath)) {
+  if (!fsO.existsSync(LogFilePathForRenderAnimation)) {
     await fs.mkdir(LogFilePathForRenderAnimation, { recursive: true });
   }
 
