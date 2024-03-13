@@ -13,6 +13,10 @@ if (args.length < 1) {
 const zerpmonId = args[0];
 
 async function uploadToCloudFlareImages() {
+ const uploadImageToCloudfareErrorLogFilePath = path.resolve(
+    __dirname,
+    "./logs/all/error_upload_image.log"
+  );
     const formData = new FormData();
     const spriteSheetImagePath = path.resolve(__dirname,`Spritesheets/${zerpmonId}/${zerpmonId}.png`);
     const fileContent = fs.readFileSync(spriteSheetImagePath);
@@ -31,11 +35,25 @@ async function uploadToCloudFlareImages() {
       body: formData
     };
     
-    fetch(url, options)
-      .then(res => res.json())
-      .then(json => console.log("Uploaded the Spritesheet to Cloudflare Images Successfully"))
-      .catch(err => console.error('error:' + err));
-}
+    try {
+      const res = await fetch(url, options);
+      const json = await res.json();
+    
+      
+    
+      // Check the "success" field in the JSON response
+      if (json.success) {
+        console.log("Uploaded the Spritesheet to Cloudflare Images Successfully");
+      } else {
+        fs.appendFileSync(uploadImageToCloudfareErrorLogFilePath, `${zerpmonId}\n`);
+        console.error("Upload failed");
+      }
+    } catch (err) {
+      console.error('Error:', err);
+      fs.appendFileSync(uploadImageToCloudfareErrorLogFilePath, `${zerpmonId}\n`);
+    }
+  }
+
 
 
 uploadToCloudFlareImages();
