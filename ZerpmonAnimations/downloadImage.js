@@ -11,14 +11,18 @@ async function downloadImage(url, destinationPath) {
 }
 
 async function fetchAndDownloadImage(apiUrl, destinationFolder, headers) {
+    if (!fs.existsSync(destinationFolder)) {
+        fs.mkdirSync(destinationFolder);
+    }
+
     try {
         // Fetch API data
         const response = await fetch(apiUrl, { headers });
         const data = await response.json();
-        
+
         // Iterate over each object in the array
         for (const item of data) {
-            const ipfsGatewayUrl = "https://ipfs.io/ipfs/";
+            const ipfsGatewayUrl = "https://cloudflare-ipfs.com/ipfs/";
 
             // Replace 'ipfs://' with the IPFS gateway URL
             const apiUrl = item.uri.replace("ipfs://", ipfsGatewayUrl);
@@ -42,6 +46,8 @@ async function fetchAndDownloadImage(apiUrl, destinationFolder, headers) {
             } catch (error) {
                 console.error("Error fetching IPFS data:", error);
             }
+
+            break;
         }
     } catch (error) {
         console.error('Error fetching API data:', error.message);
@@ -52,7 +58,7 @@ async function fetchAndDownloadImage(apiUrl, destinationFolder, headers) {
 const apiUrl = 'https://app.zerpmon.world/api/zerpmons';
 const destinationFolder = './ZerpmonImages';
 const headers = {
-    'Authorization': 'Bearer aSxZ8Q1KkuTV8KTLUzI9jdAciGLCgHcI', 
+    'Authorization': 'Bearer aSxZ8Q1KkuTV8KTLUzI9jdAciGLCgHcI',
 };
 
 fetchAndDownloadImage(apiUrl, destinationFolder, headers);
