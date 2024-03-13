@@ -4,7 +4,12 @@ const path = require('path');
 
 // Function to upload JSON file
 async function uploadJSONFile(zerpmonId) {
+  const uploadJsonToCloudfareR2ErrorLogFilePath = path.resolve(
+    __dirname,
+    "./logs/all/error_upload_r2.log"
+  );
   try {
+    
     // Read JSON file
     const spriteSheetJsonPath = path.resolve(__dirname,`Spritesheets/${zerpmonId}/${zerpmonId}.json`);
     const jsonData = fs.readFileSync(spriteSheetJsonPath);
@@ -20,6 +25,7 @@ async function uploadJSONFile(zerpmonId) {
 
     console.log(`File uploaded to R2 storage successfully. Response status: ${response.status}`);
   } catch (error) {
+    fs.appendFileSync(uploadJsonToCloudfareR2ErrorLogFilePath, `${zerpmonId}\n`);
     console.error('Error uploading file:', error.message);
   }
 }

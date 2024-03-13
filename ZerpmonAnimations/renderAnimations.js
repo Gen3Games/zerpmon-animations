@@ -115,9 +115,16 @@ async function uploadToCloudFlareR2(nodeScriptPath, zerpmon_id) {
 }
 
 async function main() {
-  errorLogFilePath = path.resolve(__dirname, "./logs/all/error.log");
-  successLogFilePath = path.resolve(__dirname, "./logs/all/success.log");
-
+  const errorLogFilePath = path.resolve(__dirname, "./logs/all/error.log");
+  const successLogFilePath = path.resolve(__dirname, "./logs/all/success.log");
+  const uploadImageToCloudfareErrorLogFilePath = path.resolve(
+    __dirname,
+    "./logs/all/error_upload_image.log"
+  );
+  const uploadJsonToCloudfareR2ErrorLogFilePath = path.resolve(
+    __dirname,
+    "./logs/all/error_upload_r2.log"
+  );
 
   LogFilePathForRenderAnimation = path.resolve(__dirname, "./logs/all");
 
@@ -140,6 +147,8 @@ async function main() {
 
   await fs.open(errorLogFilePath, "w");
   await fs.open(successLogFilePath, "w");
+  await fs.open(uploadImageToCloudfareErrorLogFilePath, "w");
+  await fs.open(uploadJsonToCloudfareR2ErrorLogFilePath, "w");
 
   const blenderAnimationFiles = [
     "ZerpmonCardAppearanceL",
@@ -189,6 +198,7 @@ async function main() {
           file.slice(0, -4)
         );
         await fs.appendFile(successLogFilePath, `${file.slice(0, -4)}\n`);
+        
       } catch (error) {
         await fs.appendFile(errorLogFilePath, `${file.slice(0, -4)}\n`);
       }
