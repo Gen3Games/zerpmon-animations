@@ -16,7 +16,7 @@ async function devideImagesToChunks(apiUrl, destinationFolder, headers) {
     const response = await fetch(apiUrl, { headers });
     const data = await response.json();
 
-    const errroLogFilePath = path.join(destinationFolder, "error.log");
+    const errroLogFilePath = path.resolve(__dirname, "./logs/download/error.log");
     fs.openSync(errroLogFilePath, "w");
 
     const chunkSize = 50;
@@ -62,7 +62,7 @@ async function devideImagesToChunks(apiUrl, destinationFolder, headers) {
 
 // Example usage: Download 2 images
 const apiUrl = "https://app.zerpmon.world/api/zerpmons";
-const destinationFolder = "./imageChunks";
+const destinationFolder = path.resolve(__dirname, "./imageChunks");
 const headers = {
   Authorization: "Bearer aSxZ8Q1KkuTV8KTLUzI9jdAciGLCgHcI",
 };

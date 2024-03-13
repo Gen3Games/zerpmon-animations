@@ -114,13 +114,13 @@ async function uploadToCloudFlareR2(nodeScriptPath, zerpmon_id) {
 }
 
 async function main() {
-  errroLogFilePath = "./logs/all/error.log";
-  successLogFilePath = "./logs/all/success.log";
+  errorLogFilePath = path.resolve(__dirname, "./logs/all/error.log");
+  successLogFilePath = path.resolve(__dirname, "./logs/all/success.log");
 
   // create log directories if they don't exist
   await fs.mkdir("./logs/all", { recursive: true });
 
-  await fs.open(errroLogFilePath, "w");
+  await fs.open(errorLogFilePath, "w");
   await fs.open(successLogFilePath, "w");
 
   const blenderAnimationFiles = [
@@ -146,7 +146,7 @@ async function main() {
     for (const file of files) {
       try {
         for (const blenderAnimationFile of blenderAnimationFiles) {
-          const filePath = `${directoryPath}${blenderAnimationFile}.blend`;
+          const filePath = path.join(directoryPath, `${blenderAnimationFile}.blend`);
           await renderBlenderAnimation(
             filePath,
             pythonScriptPath,
@@ -159,17 +159,17 @@ async function main() {
         await generateSpritesheet("generateSpritesheet.js", file.slice(0, -4));
 
         await uploadToCloudFlareImages(
-          "uploadToCloudFlareImages.js",
+          "uploadToCloudflareImages.js",
           file.slice(0, -4)
         );
 
         await uploadToCloudFlareR2(
-          "uploadToCloudFlareR2.js",
+          "uploadToCloudflareR2.js",
           file.slice(0, -4)
         );
         await fs.appendFile(successLogFilePath, `${file.slice(0, -4)}\n`);
       } catch (error) {
-        await fs.appendFile(errroLogFilePath, `${file.slice(0, -4)}\n`);
+        await fs.appendFile(errorLogFilePath, `${file.slice(0, -4)}\n`);
       }
     }
 

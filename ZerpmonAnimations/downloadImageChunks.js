@@ -11,8 +11,8 @@ async function downloadImage(url, destinationPath) {
 }
 
 async function fetchAndDownloadImage(destinationFolder, chunkfilePath) {
-  errroLogFilePath = "./logs/download/error.log";
-  successLogFilePath = "./logs/download/success.log";
+  const errroLogFilePath = path.resolve(__dirname, "./logs/download/error.log");
+  const successLogFilePath = path.resolve(__dirname, "./logs/download/success.log");
   fs.openSync(errroLogFilePath, "w");
   fs.openSync(successLogFilePath, "w");
 
@@ -42,8 +42,7 @@ async function fetchAndDownloadImage(destinationFolder, chunkfilePath) {
 }
 
 // Example usage: Download 2 images
-
-const destinationFolder = "./ZerpmonImages";
-const chunkfilePath = "./imageChunks/0_imageSet";
+const destinationFolder = path.resolve(__dirname, "./ZerpmonImages");
+const chunkfilePath = path.resolve(__dirname, "./imageChunks/0_imageSet");
 
 fetchAndDownloadImage(destinationFolder, chunkfilePath);

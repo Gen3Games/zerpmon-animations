@@ -13,7 +13,9 @@ const zerpmonId = args[0];
 
 async function uploadToCloudFlareImages() {
     const formData = new FormData();
-    const fileContent = fs.readFileSync(`Spritesheets/${zerpmonId}/${zerpmonId}.png`);
+    const spriteSheetImagePath = path.resolve(__dirname,`Spritesheets/${zerpmonId}/${zerpmonId}.png`);
+    const fileContent = fs.readFileSync(spriteSheetImagePath);
+    
     
     formData.append('file', fileContent);
     formData.append('id', `${zerpmonId}_spritesheet`)

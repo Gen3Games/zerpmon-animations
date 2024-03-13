@@ -1,5 +1,6 @@
-let texturePacker = require("free-tex-packer-core");
+const texturePacker = require("free-tex-packer-core");
 const fs = require("fs");
+const path = require("path");
 
 const args = process.argv.slice(2);
 
@@ -9,21 +10,19 @@ if (args.length < 1) {
 }
 
 const textureName = args[0];
-const pngSequencePath = `pngSequences/${textureName}`;
-const spritesheetPath = `Spritesheets/${textureName}`;
+const pngSequencePath = path.resolve(__dirname, `pngSequences/${textureName}`);
+const spritesheetPath = path.resolve(__dirname, `Spritesheets/${textureName}`);
 
 let options = {
-  // textureName: "equipAppear",
   textureName: textureName,
-  textureFormat: "png", //defualt
+  textureFormat: "png", //default
   exporter: "Phaser3",
   removeFileExtension: false, //default
-  prependFolderName: false, //defualt
-  base64Export: false, //defualt
-  tinify: true, //defualt
-  tinifyKey: "XXXXXXXXXXXXXXXXXXXXXX", //defualt
-  scale: 1, //defualt
-  // filter: none //default
+  prependFolderName: false, //default
+  base64Export: false, //default
+  tinify: true, //default
+  tinifyKey: "HgMHbnBKj5x2Fq7GH2TPcKJSRDwbMdy9", //default
+  scale: 1, //default
   width: 4000,
   height: 4000,
   fixedSize: false, //default
@@ -32,7 +31,6 @@ let options = {
   extrude: 0, //default
   allowRotation: false, //default
   allowTrim: true, //default
-  //trimMode: trim,   //default
   alphaThreshold: 16,
   detectIdentical: true, //default
   packer: "MaxRectsBin",
@@ -44,7 +42,7 @@ let images = [];
 const files = fs.readdirSync(pngSequencePath);
 
 for (const file of files) {
-  const filePath = `${pngSequencePath}/${file}`;
+  const filePath = path.join(pngSequencePath, file);
 
   // Check if the item is a file (not a directory)
   const isFile = fs.statSync(filePath).isFile();
@@ -65,13 +63,13 @@ texturePacker(images, options, (files, error) => {
     for (let item of files) {
       // Writing PNG file
       if (item.name.endsWith(".png")) {
-        fs.writeFileSync(`${spritesheetPath}/${item.name}`, item.buffer);
+        fs.writeFileSync(path.join(spritesheetPath, item.name), item.buffer);
         console.log(`${item.name} written successfully.`);
       }
       // Writing JSON file
       else if (item.name.endsWith(".json")) {
         fs.writeFileSync(
-          `${spritesheetPath}/${item.name}`,
+          path.join(spritesheetPath, item.name),
           JSON.stringify(JSON.parse(item.buffer.toString()), null, 2)
         );
         console.log(`${item.name} written successfully.`);
