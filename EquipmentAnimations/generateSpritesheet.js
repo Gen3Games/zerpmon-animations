@@ -9,7 +9,7 @@ if (args.length < 1) {
 }
 
 const textureName = args[0];
-const spritesheetPath = `${textureName}/${textureName}`;
+const spritesheetPath = path.resolve(`${textureName}/${textureName}`);
 
 let options = {
     // textureName: "equipAppear",

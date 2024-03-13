@@ -113,13 +113,13 @@ async function main() {
 
   const blenderAnimationFiles = [
     'ZerpmonCardAppearanceL',
-    'ZerpmonCardAppearanceR',
-    'ZerpmonCardDestructionL',
-    'ZerpmonCardDestructionR',
-    'ZerpmonJiggleL',
-    'ZerpmonJiggleR',
-    'ZerpmonDamageL',
-    'ZerpmonDamageR',
+ //   'ZerpmonCardAppearanceR',
+    // 'ZerpmonCardDestructionL',
+    // 'ZerpmonCardDestructionR',
+    // 'ZerpmonJiggleL',
+    // 'ZerpmonJiggleR',
+    // 'ZerpmonDamageL',
+    // 'ZerpmonDamageR',
   ];
   const [animationName, imageFilePath] = process.argv.slice(2);
   const pythonScriptPath = 'generateImageSequence.py';
@@ -144,6 +144,8 @@ async function main() {
           );
         }
 
+        break; 
+        
         await generateSpritesheet('generateSpritesheet.js', file.slice(0, -4));
 
         await uploadToCloudFlareImages('uploadToCloudFlareImages.js', file.slice(0, -4));

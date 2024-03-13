@@ -2,6 +2,7 @@ import bpy
 import os
 import sys
 import subprocess
+from os.path import abspath
 
 bpy.context.scene.render.engine = 'CYCLES'
 bpy.context.preferences.addons['cycles'].preferences.compute_device_type = 'CUDA'
@@ -33,6 +34,7 @@ if len(sys.argv) > 6:
 
     # Specify the output directory
     output_directory = 'pngSequences/' + animation_name + '/'
+    print(output_directory);
 
     # Create the output directory if it doesn't exist
     os.makedirs(output_directory, exist_ok=True)
@@ -41,7 +43,8 @@ if len(sys.argv) > 6:
     bpy.context.scene.render.image_settings.file_format = 'PNG'
 
     # Set the output directory in the render settings
-    bpy.context.scene.render.filepath = os.path.join(output_directory, image_name)
+    bpy.context.scene.render.filepath = abspath(os.path.join(output_directory, image_name))
+    print(bpy.context.scene.render.filepath);
 
     # Render animation
     bpy.ops.render.render(animation=True)
