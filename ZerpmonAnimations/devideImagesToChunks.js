@@ -19,7 +19,7 @@ async function devideImagesToChunks(apiUrl, destinationFolder, headers) {
     const errroLogFilePath = path.resolve(__dirname, "./logs/download/error.log");
     fs.openSync(errroLogFilePath, "w");
 
-    const chunkSize = 50;
+    const chunkSize = 100;
     let chunkNumber = 0;
     let imageCount = 0;
     for (const item of data) {
