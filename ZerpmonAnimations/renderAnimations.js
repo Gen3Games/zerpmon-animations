@@ -145,16 +145,18 @@ async function main() {
 
     for (const file of files) {
       try {
-        for (const blenderAnimationFile of blenderAnimationFiles) {
-          const filePath = `${directoryPath}${blenderAnimationFile}.blend`;
-          await renderBlenderAnimation(
+        const promises = blenderAnimationFiles.map(async (animationFile) => {
+          const filePath = `${directoryPath}${animationFile}.blend`;
+          return renderBlenderAnimation(
             filePath,
             pythonScriptPath,
-            path.resolve(zerpmonImagesPath, file),
+            `${zerpmonImagesPath}${file}`,
             file.slice(0, -4),
-            blenderAnimationFile
+            animationFile
           );
-        }
+        });
+
+        await Promise.all(promises);
 
         await generateSpritesheet("generateSpritesheet.js", file.slice(0, -4));
 
