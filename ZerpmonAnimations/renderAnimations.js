@@ -177,7 +177,7 @@ async function main() {
           return renderBlenderAnimation(
             filePath,
             pythonScriptPath,
-            `${zerpmonImagesPath}${file}`,
+            path.resolve(zerpmonImagesPath, file),
             file.slice(0, -4),
             animationFile
           );
