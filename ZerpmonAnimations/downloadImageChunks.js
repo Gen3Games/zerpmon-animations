@@ -11,8 +11,16 @@ async function downloadImage(url, destinationPath) {
 }
 
 async function fetchAndDownloadImage(destinationFolder, chunkfilePath) {
+  if (fs.existsSync(destinationFolder)) {
+    fs.rmSync(`${destinationFolder}`, { recursive: true, force: true });
+  }
+  fs.mkdirSync(destinationFolder);
+
   const errroLogFilePath = path.resolve(__dirname, "./logs/download/error.log");
-  const successLogFilePath = path.resolve(__dirname, "./logs/download/success.log");
+  const successLogFilePath = path.resolve(
+    __dirname,
+    "./logs/download/success.log"
+  );
   fs.openSync(errroLogFilePath, "w");
   fs.openSync(successLogFilePath, "w");
 
@@ -41,8 +49,9 @@ async function fetchAndDownloadImage(destinationFolder, chunkfilePath) {
   }
 }
 
-// Example usage: Download 2 images
-const destinationFolder = path.resolve(__dirname, "./ZerpmonImages");
-const chunkfilePath = path.resolve(__dirname, "./imageChunks/0_imageSet");
+// update this accordingly
+const CHUNKSET = "0_imageSet";
 
+const destinationFolder = path.resolve(__dirname, "./ZerpmonImages");
+const chunkfilePath = path.resolve(__dirname, `./imageChunks/${CHUNKSET}`);
 fetchAndDownloadImage(destinationFolder, chunkfilePath);

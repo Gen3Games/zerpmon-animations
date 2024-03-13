@@ -1,6 +1,7 @@
 const { spawn } = require("child_process");
 const path = require("path");
 const fs = require("fs").promises;
+const fsO = require("fs");
 
 async function renderBlenderAnimation(
   blenderFilePath,
@@ -117,8 +118,25 @@ async function main() {
   errorLogFilePath = path.resolve(__dirname, "./logs/all/error.log");
   successLogFilePath = path.resolve(__dirname, "./logs/all/success.log");
 
+  LogFilePath = path.resolve(__dirname, "./logs");
+  LogFilePathForRenderAnimation = path.resolve(__dirname, "./logs/all");
+
+  spritesheetsFilePath = path.resolve(__dirname, "./Spritesheets");
+  pngSequencesFilePath = path.resolve(__dirname, "./pngSequences");
+
   // create log directories if they don't exist
-  await fs.mkdir("./logs/all", { recursive: true });
+  if (!fsO.existsSync(LogFilePath)) {
+    await fs.mkdir(LogFilePathForRenderAnimation, { recursive: true });
+  }
+
+  // create directories if they don't exist
+  if (!fsO.existsSync(spritesheetsFilePath)) {
+    await fs.mkdir(spritesheetsFilePath);
+  }
+
+  if (!fsO.existsSync(pngSequencesFilePath)) {
+    await fs.mkdir(pngSequencesFilePath);
+  }
 
   await fs.open(errorLogFilePath, "w");
   await fs.open(successLogFilePath, "w");
@@ -146,7 +164,10 @@ async function main() {
     for (const file of files) {
       try {
         for (const blenderAnimationFile of blenderAnimationFiles) {
-          const filePath = path.join(directoryPath, `${blenderAnimationFile}.blend`);
+          const filePath = path.join(
+            directoryPath,
+            `${blenderAnimationFile}.blend`
+          );
           await renderBlenderAnimation(
             filePath,
             pythonScriptPath,
