@@ -1,11 +1,13 @@
 const fs = require('fs');
 const axios = require('axios');
+const path = require('path');
 
 // Function to upload JSON file
 async function uploadJSONFile(zerpmonId) {
   try {
     // Read JSON file
-    const jsonData = fs.readFileSync(`Spritesheets/${zerpmonId}/${zerpmonId}.json`);
+    const spriteSheetJsonPath = path.resolve(__dirname,`Spritesheets/${zerpmonId}/${zerpmonId}.json`);
+    const jsonData = fs.readFileSync(spriteSheetJsonPath);
 
     // Make PUT request to API endpoint
     const apiUrl = `https://workers-setup.xscapenft.workers.dev/zerpmon-spritesheet-json/${zerpmonId}.json`;

@@ -1,6 +1,7 @@
 const { spawn } = require("child_process");
 const path = require("path");
 const fs = require("fs").promises;
+const fsO = require("fs");
 
 async function renderBlenderAnimation(
   blenderFilePath,
@@ -114,13 +115,29 @@ async function uploadToCloudFlareR2(nodeScriptPath, zerpmon_id) {
 }
 
 async function main() {
-  errroLogFilePath = "./logs/all/error.log";
-  successLogFilePath = "./logs/all/success.log";
+  errorLogFilePath = path.resolve(__dirname, "./logs/all/error.log");
+  successLogFilePath = path.resolve(__dirname, "./logs/all/success.log");
+
+  LogFilePathForRenderAnimation = path.resolve(__dirname, "./logs/all");
+
+  spritesheetsFilePath = path.resolve(__dirname, "./Spritesheets");
+  pngSequencesFilePath = path.resolve(__dirname, "./pngSequences");
 
   // create log directories if they don't exist
-  await fs.mkdir("./logs/all", { recursive: true });
+  if (!fsO.existsSync(LogFilePathForRenderAnimation)) {
+    await fs.mkdir(LogFilePathForRenderAnimation, { recursive: true });
+  }
 
-  await fs.open(errroLogFilePath, "w");
+  // create directories if they don't exist
+  if (!fsO.existsSync(spritesheetsFilePath)) {
+    await fs.mkdir(spritesheetsFilePath);
+  }
+
+  if (!fsO.existsSync(pngSequencesFilePath)) {
+    await fs.mkdir(pngSequencesFilePath);
+  }
+
+  await fs.open(errorLogFilePath, "w");
   await fs.open(successLogFilePath, "w");
 
   const blenderAnimationFiles = [
@@ -161,17 +178,17 @@ async function main() {
         await generateSpritesheet("generateSpritesheet.js", file.slice(0, -4));
 
         await uploadToCloudFlareImages(
-          "uploadToCloudFlareImages.js",
+          "uploadToCloudflareImages.js",
           file.slice(0, -4)
         );
 
         await uploadToCloudFlareR2(
-          "uploadToCloudFlareR2.js",
+          "uploadToCloudflareR2.js",
           file.slice(0, -4)
         );
         await fs.appendFile(successLogFilePath, `${file.slice(0, -4)}\n`);
       } catch (error) {
-        await fs.appendFile(errroLogFilePath, `${file.slice(0, -4)}\n`);
+        await fs.appendFile(errorLogFilePath, `${file.slice(0, -4)}\n`);
       }
     }
 

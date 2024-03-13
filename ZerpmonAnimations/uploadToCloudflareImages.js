@@ -1,6 +1,7 @@
 const FormData = require('form-data');
 const fetch = require('node-fetch');
 const fs = require('fs');
+const path = require('path');
 
 const args = process.argv.slice(2);
 
@@ -13,7 +14,9 @@ const zerpmonId = args[0];
 
 async function uploadToCloudFlareImages() {
     const formData = new FormData();
-    const fileContent = fs.readFileSync(`Spritesheets/${zerpmonId}/${zerpmonId}.png`);
+    const spriteSheetImagePath = path.resolve(__dirname,`Spritesheets/${zerpmonId}/${zerpmonId}.png`);
+    const fileContent = fs.readFileSync(spriteSheetImagePath);
+    
     
     formData.append('file', fileContent);
     formData.append('id', `${zerpmonId}_spritesheet`)
