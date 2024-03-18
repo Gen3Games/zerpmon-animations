@@ -3,6 +3,7 @@ const path = require("path");
 const fs = require("fs").promises;
 const fsO = require("fs");
 
+
 async function renderBlenderAnimation(
   blenderFilePath,
   pythonScriptPath,
@@ -64,57 +65,9 @@ async function generateSpritesheet(nodeScriptPath, textureName) {
   });
 }
 
-async function uploadToCloudFlareImages(nodeScriptPath, zerpmon_id) {
-  return new Promise((resolve, reject) => {
-    const renderSpritesheet = spawn("node", [nodeScriptPath, zerpmon_id]);
 
-    renderSpritesheet.stdout.on("data", (nodeData) => {
-      console.log(`${nodeData}`);
-    });
 
-    renderSpritesheet.stderr.on("data", (nodeErrorData) => {
-      console.error(
-        `uploadToCloudFlareImages.js script ERROR: ${nodeErrorData}`
-      );
-    });
-
-    renderSpritesheet.on("close", (nodeCode) => {
-      if (nodeCode !== 0) {
-        reject(
-          `Error executing uploadToCloudFlareImages.js script. Exit code: ${nodeCode}`
-        );
-      } else {
-        resolve();
-      }
-    });
-  });
-}
-
-async function uploadToCloudFlareR2(nodeScriptPath, zerpmon_id) {
-  return new Promise((resolve, reject) => {
-    const renderSpritesheet = spawn("node", [nodeScriptPath, zerpmon_id]);
-
-    renderSpritesheet.stdout.on("data", (nodeData) => {
-      console.log(`${nodeData}`);
-    });
-
-    renderSpritesheet.stderr.on("data", (nodeErrorData) => {
-      console.error(`uploadToCloudFlareR2.js script ERROR: ${nodeErrorData}`);
-    });
-
-    renderSpritesheet.on("close", (nodeCode) => {
-      if (nodeCode !== 0) {
-        reject(
-          `Error executing uploadToCloudFlareR2.js script. Exit code: ${nodeCode}`
-        );
-      } else {
-        resolve();
-      }
-    });
-  });
-}
-
-async function main() {
+async function main(animationsPerProcess) {
   const errorLogFilePath = path.resolve(__dirname, "./logs/all/error.log");
   const successLogFilePath = path.resolve(__dirname, "./logs/all/success.log");
   const uploadImageToCloudfareErrorLogFilePath = path.resolve(
@@ -167,37 +120,43 @@ async function main() {
   // use absolute path for ZerpmonImages/ directory
   const zerpmonImagesPath = path.resolve(__dirname, "./ZerpmonImages/");
 
+  const { uploadToCloudFlareImages} = require('./uploadToCloudflareImages');
+  const { uploadToCloudFlareR2} = require('./uploadToCloudflareR2');
+
   try {
     const files = await fs.readdir(zerpmonImagesPath);
 
     for (const file of files) {
       try {
-        const promises = blenderAnimationFiles.map(async (animationFile) => {
-          const filePath = `${directoryPath}${animationFile}.blend`;
-          return renderBlenderAnimation(
-            filePath,
-            pythonScriptPath,
-            path.resolve(zerpmonImagesPath, file),
-            file.slice(0, -4),
-            animationFile
-          );
-        });
-
-        await Promise.all(promises);
+        for (let i = 0; i < blenderAnimationFiles.length; i += animationsPerProcess) {
+          const promises = [];
+          const fileSlice = blenderAnimationFiles.slice(i, i + animationsPerProcess);
+          for (const animationFile of fileSlice) {
+            const filePath = `${directoryPath}${animationFile}.blend`;
+            promises.push(renderBlenderAnimation(
+              filePath,
+              pythonScriptPath,
+              path.resolve(zerpmonImagesPath, file),
+              file.slice(0, -4),
+              animationFile
+            ));
+          }
+          await Promise.all(promises);
+        }
 
         await generateSpritesheet("generateSpritesheet.js", file.slice(0, -4));
 
-        await uploadToCloudFlareImages(
-          "uploadToCloudflareImages.js",
-          file.slice(0, -4)
-        );
-
-        await uploadToCloudFlareR2(
-          "uploadToCloudflareR2.js",
-          file.slice(0, -4)
-        );
+        
+        await uploadToCloudFlareImages(file.slice(0, -4));
+        console.log(`Images uploaded successfully for ${file.slice(0, -4)} to Cloudflare.`);
+        
+               
+        await uploadToCloudFlareR2(file.slice(0, -4));
+        console.log(`R2 uploaded successfully for ${file.slice(0, -4)} to Cloudflare.`);
+        
         await fs.appendFile(successLogFilePath, `${file.slice(0, -4)}\n`);
       } catch (error) {
+        console.error(`Error processing file ${file.slice(0, -4)}: ${error}`);
         await fs.appendFile(errorLogFilePath, `${file.slice(0, -4)}\n`);
       }
     }
@@ -208,4 +167,5 @@ async function main() {
   }
 }
 
-main();
+const animationsPerProcess = 1; 
+main(animationsPerProcess);

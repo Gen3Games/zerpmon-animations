@@ -57,7 +57,7 @@ async function fetchAndDownloadImage(destinationFolder, chunkfilePath) {
 }
 
 // update this accordingly
-const CHUNKSET = "0_imageSet";
+const CHUNKSET = "6_imageSet";
 
 const destinationFolder = path.resolve(__dirname, "./ZerpmonImages");
 const chunkfilePath = path.resolve(__dirname, `./imageChunks/${CHUNKSET}`);
