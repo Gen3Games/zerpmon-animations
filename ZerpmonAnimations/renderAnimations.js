@@ -105,13 +105,13 @@ async function main(animationsPerProcess) {
 
   const blenderAnimationFiles = [
     "ZerpmonCardAppearanceL",
-    // "ZerpmonCardAppearanceR",
-    // "ZerpmonCardDestructionL",
-    // "ZerpmonCardDestructionR",
-    // "ZerpmonJiggleL",
-    // "ZerpmonJiggleR",
-    // "ZerpmonDamageL",
-    // "ZerpmonDamageR",
+    "ZerpmonCardAppearanceR",
+    "ZerpmonCardDestructionL",
+    "ZerpmonCardDestructionR",
+    "ZerpmonJiggleL",
+    "ZerpmonJiggleR",
+    "ZerpmonDamageL",
+    "ZerpmonDamageR",
   ];
 
   // const [animationName, imageFilePath] = process.argv.slice(2);
