@@ -18,7 +18,6 @@ async function fetchAndDownloadImage(destinationFolder, chunkfilePath) {
 
   LogFilePathForDownload = path.resolve(__dirname, "./logs/download");
 
-  // create log directories if they don't exist
   if (!fs.existsSync(LogFilePathForDownload)) {
     fs.mkdirSync(LogFilePathForDownload, { recursive: true });
   }
@@ -38,15 +37,15 @@ async function fetchAndDownloadImage(destinationFolder, chunkfilePath) {
     for (const line of lines) {
       if (line) {
         const lineSplited = line.split(",");
-        const nftId = lineSplited[0];
+        const nftName = lineSplited[0];
         const imageUrl = lineSplited[1];
-        const filename = `${nftId}.png`;
+        const filename = `${nftName}.png`;
         const destinationPath = path.join(destinationFolder, filename);
         try {
           await downloadImage(imageUrl, destinationPath);
-          fs.appendFileSync(successLogFilePath, `${nftId},${imageUrl}\n`);
+          fs.appendFileSync(successLogFilePath, `${nftName},${imageUrl}\n`);
         } catch (error) {
-          fs.appendFileSync(errroLogFilePath, `${nftId},${imageUrl}\n`);
+          fs.appendFileSync(errroLogFilePath, `${nftName},${imageUrl}\n`);
           console.error("Error downloading images:", error.message);
         }
       }
