@@ -45,28 +45,6 @@ async function renderBlenderAnimation(
   });
 }
 
-// async function generateSpritesheet(nodeScriptPath, textureName) {
-//   return new Promise((resolve, reject) => {
-//     const renderSpritesheet = spawn("node", [nodeScriptPath, textureName]);
-
-//     renderSpritesheet.stdout.on("data", (nodeData) => {
-//       console.log(`${nodeData}`);
-//     });
-
-//     renderSpritesheet.stderr.on("data", (nodeErrorData) => {
-//       console.error(`Node.js script ERROR: ${nodeErrorData}`);
-//     });
-
-//     renderSpritesheet.on("close", (nodeCode) => {
-//       if (nodeCode !== 0) {
-//         reject(`Error executing Node.js script. Exit code: ${nodeCode}`);
-//       } else {
-//         resolve();
-//       }
-//     });
-//   });
-// }
-
 async function main(animationsPerProcess) {
   const errorLogFilePath = path.resolve(__dirname, "./logs/all/error.log");
   const successLogFilePath = path.resolve(__dirname, "./logs/all/success.log");
