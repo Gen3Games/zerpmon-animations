@@ -3,6 +3,9 @@ const { packAsync } = require("free-tex-packer-core");
 const fs = require("fs");
 const path = require("path");
 
+const types = ["Left", "Right"];
+let scales = [0.5, 0.75, 1];
+
 async function generateSpritesheet(zerpmonName) {
   try {
     const pngSequencePath = path.resolve(
@@ -14,65 +17,112 @@ async function generateSpritesheet(zerpmonName) {
       `Spritesheets/${zerpmonName}`
     );
 
-    let options = {
-      textureName: zerpmonName,
-      textureFormat: "png", //default
-      exporter: "Phaser3",
-      removeFileExtension: false, //default
-      prependFolderName: false, //default
-      base64Export: false, //default
-      tinify: true, //default
-      tinifyKey: "HgMHbnBKj5x2Fq7GH2TPcKJSRDwbMdy9", //default
-      scale: 1, //default
-      width: 4000,
-      height: 4000,
-      fixedSize: false, //default
-      powerOfTwo: false, //default
-      padding: 0, //default
-      extrude: 0, //default
-      allowRotation: false, //default
-      allowTrim: true, //default
-      alphaThreshold: 16,
-      detectIdentical: true, //default
-      packer: "MaxRectsBin",
-      packerMethod: "BestLongSideFit",
-    };
+    scales.forEach(async (scale) => {
+      let options = {
+        textureName: zerpmonName,
+        textureFormat: "png", //default
+        exporter: "Phaser3",
+        removeFileExtension: false, //default
+        prependFolderName: false, //default
+        base64Export: false, //default
+        tinify: true, //default
+        tinifyKey: "HgMHbnBKj5x2Fq7GH2TPcKJSRDwbMdy9", //default
+        scale: scale, //default
+        width: 2100,
+        height: 2100,
+        fixedSize: false, //default
+        powerOfTwo: false, //default
+        padding: 0, //default
+        extrude: 0, //default
+        allowRotation: false, //default
+        allowTrim: true, //default
+        alphaThreshold: 10,
+        detectIdentical: true, //default
+        packer: "MaxRectsBin",
+        packerMethod: "BestLongSideFit",
+      };
 
-    let images = [];
+      let images = [];
 
-    const files = fs.readdirSync(pngSequencePath);
+      const files = fs.readdirSync(pngSequencePath);
 
-    for (const file of files) {
-      const filePath = path.join(pngSequencePath, file);
+      const leftFiles = [];
+      const rightFiles = [];
 
-      // Check if the item is a file (not a directory)
-      const isFile = fs.statSync(filePath).isFile();
-
-      if (isFile) {
-        images.push({ path: filePath, contents: fs.readFileSync(filePath) });
+      for (const file of files) {
+        const filePath = path.join(pngSequencePath, file);
+        const isFile = fs.statSync(filePath).isFile();
+        if (isFile) {
+          const fileName = file.slice(0, -4); // Remove the file extension
+          const category = fileName.slice(-5, -4);
+          if (category === "L") {
+            leftFiles.push({
+              path: filePath,
+              contents: fs.readFileSync(filePath),
+            });
+          } else if (category === "R") {
+            rightFiles.push({
+              path: filePath,
+              contents: fs.readFileSync(filePath),
+            });
+          }
+        }
       }
-    }
 
-    if (!fs.existsSync(spritesheetPath)) {
-      fs.mkdirSync(spritesheetPath, { recursive: true });
-    }
-
-    const tpFiles = await packAsync(images, options);
-
-    for (let item of tpFiles) {
-      // Writing PNG file
-      if (item.name.endsWith(".png")) {
-        fs.writeFileSync(path.join(spritesheetPath, item.name), item.buffer);
-        console.log(`${item.name} written successfully.`);
-      } // Writing JSON file
-      else if (item.name.endsWith(".json")) {
-        fs.writeFileSync(
-          path.join(spritesheetPath, item.name),
-          JSON.stringify(JSON.parse(item.buffer.toString()), null, 2)
-        );
-        console.log(`${item.name} written successfully.`);
+      if (!fs.existsSync(spritesheetPath)) {
+        fs.mkdirSync(spritesheetPath, { recursive: true });
       }
-    }
+
+      const tpFilesLeft = await packAsync(leftFiles, options);
+      for (let item of tpFilesLeft) {
+        // Writing PNG file
+        if (item.name.endsWith(".png")) {
+          fs.writeFileSync(
+            path.join(
+              spritesheetPath,
+              `${item.name.slice(0, -4)}_Left_${(options.scale).toString().replace(/\./g, '')}x.png`
+            ),
+            item.buffer
+          );
+          console.log(`${item.name} Left written successfully.`);
+        } // Writing JSON file
+        else if (item.name.endsWith(".json")) {
+          fs.writeFileSync(
+            path.join(
+              spritesheetPath,
+              `${item.name.slice(0, -5)}_Left_${(options.scale).toString().replace(/\./g, '')}x.json`
+            ),
+            JSON.stringify(JSON.parse(item.buffer.toString()), null, 2)
+          );
+          console.log(`${item.name} Left written successfully.`);
+        }
+      }
+
+      const tpFilesRight = await packAsync(rightFiles, options);
+      for (let item of tpFilesRight) {
+        // Writing PNG file
+        if (item.name.endsWith(".png")) {
+          fs.writeFileSync(
+            path.join(
+              spritesheetPath,
+              `${item.name.slice(0, -4)}_Right_${(options.scale).toString().replace(/\./g, '')}x.png`
+            ),
+            item.buffer
+          );
+          console.log(`${item.name} Right written successfully.`);
+        } // Writing JSON file
+        else if (item.name.endsWith(".json")) {
+          fs.writeFileSync(
+            path.join(
+              spritesheetPath,
+              `${item.name.slice(0, -5)}_Right_${(options.scale).toString().replace(/\./g, '')}x.json`
+            ),
+            JSON.stringify(JSON.parse(item.buffer.toString()), null, 2)
+          );
+          console.log(`${item.name} Right written successfully.`);
+        }
+      }
+    });
   } catch (error) {
     throw "error in generate spritesheet";
   }

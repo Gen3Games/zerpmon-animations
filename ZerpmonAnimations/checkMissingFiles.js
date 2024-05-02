@@ -52,7 +52,7 @@ async function uploadToCloudFlareImages(chunkfilePath, chunkName) {
 
       try {
         const res = await fetch(imagesUrl, options);
-        if (res.status != 200) {
+        if (res.status !== 200) {
           fs.appendFileSync(LogFileForcheckMissingFilesImages, `${nftId}\n`);
         }
       } catch (err) {
@@ -76,7 +76,7 @@ async function uploadToCloudFlareImages(chunkfilePath, chunkName) {
 }
 
 // update this accordingly
-const CHUNKSET = "7_imageSet";
+const CHUNKSET = "10_imageSet";
 
 const chunkfilePath = path.resolve(__dirname, `./imageChunks/${CHUNKSET}`);
 uploadToCloudFlareImages(chunkfilePath, CHUNKSET);

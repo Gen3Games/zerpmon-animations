@@ -16,7 +16,7 @@ async function devideImagesToChunks(nftListFilePath, destinationFolder) {
         const nftName = line;
         const imageUrl = `https://imagedelivery.net/9i0Mt_dC7lopRIG36ZQvKw/${encodeURIComponent(
           nftName
-        )}.png/w=3400`;
+        )}_spritesheet/public`;
 
         const filename = `${chunkNumber}_imageSet`;
         const destinationPath = path.join(destinationFolder, filename);
