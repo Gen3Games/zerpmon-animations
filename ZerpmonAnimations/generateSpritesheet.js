@@ -16,7 +16,8 @@ async function generateSpritesheet(zerpmonName) {
       `Spritesheets/${zerpmonName}`
     );
 
-    scales.forEach(async (scale) => {
+    for (let index in scales) {
+      const scale = scales[index]
       let options = {
         textureName: zerpmonName,
         textureFormat: "png", //default
@@ -40,8 +41,6 @@ async function generateSpritesheet(zerpmonName) {
         packer: "MaxRectsBin",
         packerMethod: "BestLongSideFit",
       };
-
-      let images = [];
 
       const files = fs.readdirSync(pngSequencePath);
 
@@ -121,7 +120,7 @@ async function generateSpritesheet(zerpmonName) {
           console.log(`${item.name} right written successfully.`);
         }
       }
-    });
+    }
   } catch (error) {
     throw "error in generate spritesheet";
   }
