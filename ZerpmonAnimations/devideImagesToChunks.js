@@ -13,14 +13,12 @@ async function devideImagesToChunks(nftListFilePath, destinationFolder) {
 
     for (const line of lines) {
       if (line) {
-        const nftName = line;
-        const imageUrl = `https://imagedelivery.net/9i0Mt_dC7lopRIG36ZQvKw/${encodeURIComponent(
-          nftName
-        )}_spritesheet/public`;
+        const nftNumber = line;
+        const imageUrl = `https://imagedelivery.net/9i0Mt_dC7lopRIG36ZQvKw/zerpmon-full-art-${nftNumber}.png/public`;
 
         const filename = `${chunkNumber}_imageSet`;
         const destinationPath = path.join(destinationFolder, filename);
-        fs.appendFileSync(destinationPath, `${nftName},${imageUrl}\n`);
+        fs.appendFileSync(destinationPath, `${nftNumber},${imageUrl}\n`);
         imageCount++;
         if (imageCount % chunkSize == 0) {
           imageCount = 0;

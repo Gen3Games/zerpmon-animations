@@ -3,7 +3,6 @@ const { packAsync } = require("free-tex-packer-core");
 const fs = require("fs");
 const path = require("path");
 
-const types = ["Left", "Right"];
 let scales = [0.5, 0.75, 1];
 
 async function generateSpritesheet(zerpmonName) {
@@ -80,21 +79,21 @@ async function generateSpritesheet(zerpmonName) {
           fs.writeFileSync(
             path.join(
               spritesheetPath,
-              `${item.name.slice(0, -4)}_Left_${(options.scale).toString().replace(/\./g, '')}x.png`
+              `${item.name.slice(0, -4)}_left_${(options.scale).toString().replace(/\./g, '')}x.png`
             ),
             item.buffer
           );
-          console.log(`${item.name} Left written successfully.`);
+          console.log(`${item.name} left written successfully.`);
         } // Writing JSON file
         else if (item.name.endsWith(".json")) {
           fs.writeFileSync(
             path.join(
               spritesheetPath,
-              `${item.name.slice(0, -5)}_Left_${(options.scale).toString().replace(/\./g, '')}x.json`
+              `${item.name.slice(0, -5)}_left_${(options.scale).toString().replace(/\./g, '')}x.json`
             ),
             JSON.stringify(JSON.parse(item.buffer.toString()), null, 2)
           );
-          console.log(`${item.name} Left written successfully.`);
+          console.log(`${item.name} left written successfully.`);
         }
       }
 
@@ -105,21 +104,21 @@ async function generateSpritesheet(zerpmonName) {
           fs.writeFileSync(
             path.join(
               spritesheetPath,
-              `${item.name.slice(0, -4)}_Right_${(options.scale).toString().replace(/\./g, '')}x.png`
+              `${item.name.slice(0, -4)}_right_${(options.scale).toString().replace(/\./g, '')}x.png`
             ),
             item.buffer
           );
-          console.log(`${item.name} Right written successfully.`);
+          console.log(`${item.name} right written successfully.`);
         } // Writing JSON file
         else if (item.name.endsWith(".json")) {
           fs.writeFileSync(
             path.join(
               spritesheetPath,
-              `${item.name.slice(0, -5)}_Right_${(options.scale).toString().replace(/\./g, '')}x.json`
+              `${item.name.slice(0, -5)}_right_${(options.scale).toString().replace(/\./g, '')}x.json`
             ),
             JSON.stringify(JSON.parse(item.buffer.toString()), null, 2)
           );
-          console.log(`${item.name} Right written successfully.`);
+          console.log(`${item.name} right written successfully.`);
         }
       }
     });

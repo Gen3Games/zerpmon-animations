@@ -2,13 +2,13 @@ const fs = require("fs");
 const axios = require("axios");
 const path = require("path");
 
-let types = ['Left', 'Right'];
+let types = ['left', 'right'];
 let scales = ['05x', '075x', '1x'];
 
-async function uploadToCloudflareR2(zerpmonName) {
+async function uploadToCloudflareR2(zerpmonNumber) {
   for (const type of types) {
     for (const scale of scales) {
-      console.log(`${zerpmonName}_${type}_${scale}`)
+      console.log(`${zerpmonNumber}_${type}_${scale}`)
       const uploadJsonToCloudfareR2ErrorLogFilePath = path.resolve(
         __dirname,
         "./logs/all/error_upload_r2.log"
@@ -17,11 +17,11 @@ async function uploadToCloudflareR2(zerpmonName) {
         // Read JSON file
         const spriteSheetJsonPath = path.resolve(
           __dirname,
-          `Spritesheets/${zerpmonName}/${zerpmonName}_${type}_${scale}.json`
+          `Spritesheets/${zerpmonNumber}/${zerpmonNumber}_${type}_${scale}.json`
         );
         const jsonData = fs.readFileSync(spriteSheetJsonPath);
         // Make PUT request to API endpoint
-        const apiUrl = `https://workers-setup.xscapenft.workers.dev/zerpmon-spritesheet-scaled-json/${zerpmonName}_${type}_${scale}.json`;
+        const apiUrl = `https://workers-setup.xscapenft.workers.dev/zerpmon-spritesheet-test-json/${zerpmonNumber}_${type}_${scale}.json`;
         const response = await axios.put(apiUrl, jsonData, {
           headers: {
             "Content-Type": "application/json",
@@ -33,7 +33,7 @@ async function uploadToCloudflareR2(zerpmonName) {
       } catch (error) {
         fs.appendFileSync(
           uploadJsonToCloudfareR2ErrorLogFilePath,
-          `${zerpmonName}_${type}_${scale}\n`
+          `${zerpmonNumber}_${type}_${scale}\n`
         );
         console.error("Error uploading file:", error.message);
       }

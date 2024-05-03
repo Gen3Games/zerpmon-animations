@@ -3,10 +3,10 @@ const fetch = require("node-fetch");
 const fs = require("fs");
 const path = require("path");
 
-let types = ['Left', 'Right'];
+let types = ['left', 'right'];
 let scales = ['05x', '075x', '1x'];
 
-async function uploadToCloudFlareImages(zerpmonName) {
+async function uploadToCloudFlareImages(zerpmonNumber) {
   for (const type of types) {
     for (const scale of scales) {
       const uploadImageToCloudfareErrorLogFilePath = path.resolve(
@@ -16,11 +16,11 @@ async function uploadToCloudFlareImages(zerpmonName) {
       const formData = new FormData();
       const spriteSheetImagePath = path.resolve(
         __dirname,
-        `Spritesheets/${zerpmonName}/${zerpmonName}_${type}_${scale}.png`
+        `Spritesheets/${zerpmonNumber}/${zerpmonNumber}_${type}_${scale}.png`
       );
       const fileContent = fs.readFileSync(spriteSheetImagePath);
       formData.append("file", fileContent);
-      formData.append("id", `${zerpmonName}_${type}_${scale}_spritesheet`);
+      formData.append("id", `${zerpmonNumber}_${type}_${scale}_spritesheet`);
       let url =
         "https://api.cloudflare.com/client/v4/accounts/f2183aa9a7cd9634f52e696950d49f06/images/v1";
       let options = {
@@ -39,7 +39,7 @@ async function uploadToCloudFlareImages(zerpmonName) {
         } else {
           fs.appendFileSync(
             uploadImageToCloudfareErrorLogFilePath,
-            `${zerpmonName}_${type}\n`
+            `${zerpmonNumber}_${type}\n`
           );
           console.error("Upload failed");
         }
@@ -47,7 +47,7 @@ async function uploadToCloudFlareImages(zerpmonName) {
         console.error("Error:", err);
         fs.appendFileSync(
           uploadImageToCloudfareErrorLogFilePath,
-          `${zerpmonName}_${type}_${scale}\n`
+          `${zerpmonNumber}_${type}_${scale}\n`
         );
       }
 
