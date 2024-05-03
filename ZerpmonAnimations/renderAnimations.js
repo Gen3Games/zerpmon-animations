@@ -131,10 +131,10 @@ async function main(animationsPerProcess) {
         }
         await generateSpritesheet(fileName);
 
-        // await uploadToCloudFlareImages(fileName);
-        // console.log(
-        //   `Images uploaded successfully for ${fileName} to Cloudflare.`
-        // );
+        await uploadToCloudFlareImages(fileName);
+        console.log(
+          `Images uploaded successfully for ${fileName} to Cloudflare.`
+        );
 
         await uploadToCloudFlareR2(fileName);
         console.log(`R2 uploaded successfully for ${fileName} to Cloudflare.`);
