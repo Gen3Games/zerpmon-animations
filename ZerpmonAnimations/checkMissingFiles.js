@@ -2,6 +2,9 @@ const fetch = require("node-fetch");
 const fs = require("fs");
 const path = require("path");
 
+const types = ["left", "right"];
+const scales = ["05x", "075x", "1x"];
+
 async function uploadToCloudFlareImages(chunkfilePath, chunkName) {
   LogFilePathForcheckMissingFilesImages = path.resolve(
     __dirname,
@@ -40,37 +43,54 @@ async function uploadToCloudFlareImages(chunkfilePath, chunkName) {
   let imageCount = 0;
   for (const line of lines) {
     if (line) {
-      const lineSplited = line.split(",");
-      const nftId = lineSplited[0];
+      for (const type of types) {
+        for (const scale of scales) {
+          const lineSplited = line.split(",");
+          const zerpmonId = lineSplited[0];
+          const dataPointId = `${zerpmonId}-${type}-${scale}`;
 
-      let imagesUrl = `https://imagedelivery.net/9i0Mt_dC7lopRIG36ZQvKw/${nftId}_spritesheet/public`;
-      let r2Url = `https://cfr2.zerpmon.world/zerpmon-spritesheet-json%2F${nftId}.json`;
+          let imagesUrl = `https://imagedelivery.net/9i0Mt_dC7lopRIG36ZQvKw/${dataPointId}-spritesheet/public`;
+          let r2Url = `https://cfr2.zerpmon.world/zerpmon-spritesheet-json%2F${dataPointId}.json`;
 
-      let options = {
-        method: "GET",
-      };
+          let options = {
+            method: "GET",
+          };
 
-      try {
-        const res = await fetch(imagesUrl, options);
-        if (res.status !== 200) {
-          fs.appendFileSync(LogFileForcheckMissingFilesImages, `${nftId}\n`);
+          try {
+            const res = await fetch(imagesUrl, options);
+            if (res.status !== 200) {
+              fs.appendFileSync(
+                LogFileForcheckMissingFilesImages,
+                `${dataPointId}\n`
+              );
+            }
+          } catch (err) {
+            console.error("Error:", err);
+            fs.appendFileSync(
+              LogFileForcheckMissingFilesImages,
+              `${dataPointId}\n`
+            );
+          }
+
+          try {
+            const res = await fetch(r2Url, options);
+            if (res.status != 200) {
+              fs.appendFileSync(
+                LogFileForcheckMissingFilesR2,
+                `${dataPointId}\n`
+              );
+            }
+          } catch (err) {
+            console.error("Error:", err);
+            fs.appendFileSync(
+              LogFileForcheckMissingFilesR2,
+              `${dataPointId}\n`
+            );
+          }
+          console.log("image count : ", imageCount);
+          imageCount++;
         }
-      } catch (err) {
-        console.error("Error:", err);
-        fs.appendFileSync(LogFileForcheckMissingFilesImages, `${nftId}\n`);
       }
-
-      try {
-        const res = await fetch(r2Url, options);
-        if (res.status != 200) {
-          fs.appendFileSync(LogFileForcheckMissingFilesR2, `${nftId}\n`);
-        }
-      } catch (err) {
-        console.error("Error:", err);
-        fs.appendFileSync(LogFileForcheckMissingFilesR2, `${nftId}\n`);
-      }
-      console.log("image count : ", imageCount);
-      imageCount++;
     }
   }
 }
