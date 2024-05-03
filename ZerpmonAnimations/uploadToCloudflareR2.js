@@ -21,15 +21,24 @@ async function uploadToCloudflareR2(zerpmonNumber) {
         );
         const jsonData = fs.readFileSync(spriteSheetJsonPath);
         // Make PUT request to API endpoint
-        const apiUrl = `https://workers-setup.xscapenft.workers.dev/zerpmon-spritesheet-manifest/${zerpmonNumber}_${type}_${scale}.json`;
+        const apiUrl = `https://workers-setup.xscapenft.workers.dev/zerpmon-spritesheet-manifest/${zerpmonNumber}-${type}-${scale}.json`;
         const response = await axios.put(apiUrl, jsonData, {
           headers: {
             "Content-Type": "application/json",
           },
         });
-        console.log(
-          `File uploaded to R2 storage successfully. Response status: ${response.status}`
-        );
+
+        if(response.status==200){
+          console.log(
+            `File uploaded to R2 storage successfully. Response status: ${response.status}`
+          );
+        }else{
+          fs.appendFileSync(
+            uploadJsonToCloudfareR2ErrorLogFilePath,
+            `${zerpmonNumber}_${type}_${scale}\n`
+          );
+          console.error("Error uploading file:", error.message);
+        }
       } catch (error) {
         fs.appendFileSync(
           uploadJsonToCloudfareR2ErrorLogFilePath,
