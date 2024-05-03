@@ -49,8 +49,11 @@ async function uploadToCloudFlareImages(chunkfilePath, chunkName) {
           const zerpmonId = lineSplited[0];
           const dataPointId = `${zerpmonId}-${type}-${scale}`;
 
-          let imagesUrl = `https://imagedelivery.net/9i0Mt_dC7lopRIG36ZQvKw/${dataPointId}-spritesheet/public`;
-          let r2Url = `https://cfr2.zerpmon.world/zerpmon-spritesheet-json%2F${dataPointId}.json`;
+          let imagesUrl = `https://imagedelivery.net/9i0Mt_dC7lopRIG36ZQvKw/${dataPointId}-spritesheet.png/public`;
+          let r2Url = `https://cfr2.zerpmon.world/zerpmon-spritesheet-manifest%2F${dataPointId}.json`;
+
+          console.log(imagesUrl);
+          console.log(r2Url);
 
           let options = {
             method: "GET",
@@ -87,16 +90,16 @@ async function uploadToCloudFlareImages(chunkfilePath, chunkName) {
               `${dataPointId}\n`
             );
           }
-          console.log("image count : ", imageCount);
-          imageCount++;
         }
       }
+      imageCount++;
+      console.log("image count : ", imageCount);
     }
   }
 }
 
 // update this accordingly
-const CHUNKSET = "10_imageSet";
+const CHUNKSET = "0_imageSet";
 
 const chunkfilePath = path.resolve(__dirname, `./imageChunks/${CHUNKSET}`);
 uploadToCloudFlareImages(chunkfilePath, CHUNKSET);
