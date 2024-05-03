@@ -14,7 +14,7 @@ async function devideImagesToChunks(nftListFilePath, destinationFolder) {
     for (const line of lines) {
       if (line) {
         const nftNumber = line;
-        const imageUrl = `https://imagedelivery.net/9i0Mt_dC7lopRIG36ZQvKw/zerpmon-full-art-${nftNumber}.png/public`;
+        const imageUrl = `https://imagedelivery.net/9i0Mt_dC7lopRIG36ZQvKw/zerpmon-full-art-${nftNumber}.png/w=3400`;
 
         const filename = `${chunkNumber}_imageSet`;
         const destinationPath = path.join(destinationFolder, filename);
