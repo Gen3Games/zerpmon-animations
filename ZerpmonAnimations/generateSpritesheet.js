@@ -28,8 +28,8 @@ async function generateSpritesheet(zerpmonName) {
         tinify: true, //default
         tinifyKey: "HgMHbnBKj5x2Fq7GH2TPcKJSRDwbMdy9", //default
         scale: scale, //default
-        width: 2100,
-        height: 2100,
+        width: 2150,
+        height: 2150,
         fixedSize: false, //default
         powerOfTwo: false, //default
         padding: 0, //default
