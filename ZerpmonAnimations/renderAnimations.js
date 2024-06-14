@@ -106,38 +106,38 @@ async function main() {
     for (const file of files) {
       const fileName = file.slice(0, -4);
       try {
-        // for (
-        //   let i = 0;
-        //   i < blenderAnimationFiles.length;
-        //   i += animationsPerProcess
-        // ) {
-        //   const promises = [];
-        //   const fileSlice = blenderAnimationFiles.slice(
-        //     i,
-        //     i + animationsPerProcess
-        //   );
-        //   for (const animationFile of fileSlice) {
-        //     const filePath = `${directoryPath}${animationFile}.blend`;
-        //     promises.push(
-        //       renderBlenderAnimation(
-        //         filePath,
-        //         pythonScriptPath,
-        //         path.resolve(zerpmonImagesPath, file),
-        //         fileName,
-        //         animationFile
-        //       )
-        //     );
-        //   }
-        //   await Promise.all(promises);
-        // }
-        // await generateSpritesheet(fileName);
+        for (
+          let i = 0;
+          i < blenderAnimationFiles.length;
+          i += animationsPerProcess
+        ) {
+          const promises = [];
+          const fileSlice = blenderAnimationFiles.slice(
+            i,
+            i + animationsPerProcess
+          );
+          for (const animationFile of fileSlice) {
+            const filePath = `${directoryPath}${animationFile}.blend`;
+            promises.push(
+              renderBlenderAnimation(
+                filePath,
+                pythonScriptPath,
+                path.resolve(zerpmonImagesPath, file),
+                fileName,
+                animationFile
+              )
+            );
+          }
+          await Promise.all(promises);
+        }
+        await generateSpritesheet(fileName);
 
-        // await uploadToCloudFlareImages(fileName);
+        await uploadToCloudFlareImages(fileName);
         console.log(
           `Images uploaded successfully for ${fileName} to Cloudflare.`
         );
 
-        // await uploadToCloudFlareR2(fileName);
+        await uploadToCloudFlareR2(fileName);
         console.log(`R2 uploaded successfully for ${fileName} to Cloudflare.`);
 
         await fs.appendFile(successLogFilePath, `${fileName}\n`);

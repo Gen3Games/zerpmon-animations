@@ -4,6 +4,7 @@ const endInput = document.querySelector("#end");
 const csv = document.querySelector("#csv");
 const renderCsvButton = document.querySelector("#render-csv");
 const filenameDisplay = document.querySelector("#filename");
+const spinner = document.querySelector("#spinner");
 let selectedFile = null;
 
 async function startRender(e) {
@@ -12,12 +13,15 @@ async function startRender(e) {
   const end = endInput.value;
 
   try {
+    spinner.style.display = "block";
     await createImageChunksGUI(start, end);
     await fetchAndDownloadImageGUI();
     await renderAnimationGUI();
     await checkMissingFilesGUI();
   } catch (error) {
     console.error("Error : ", error);
+  } finally {
+    spinner.style.display = "none";
   }
 }
 
@@ -29,6 +33,7 @@ async function startRenderWithCSV(event) {
     return;
   }
 
+  spinner.style.display = "block";
   const reader = new FileReader();
   reader.onload = async function (event) {
     const csvData = event.target.result;
@@ -40,6 +45,8 @@ async function startRenderWithCSV(event) {
       await checkMissingFilesGUI();
     } catch (error) {
       console.error("Error : ", error);
+    } finally {
+      spinner.style.display = "none";
     }
   };
   reader.readAsText(selectedFile);
@@ -50,7 +57,7 @@ async function processCSVDataGUI(csvData) {
   if (response.result) {
     alertSuccess(response.message);
   } else {
-    alertError(missingFilesResponse.message);
+    alertError(response.message);
   }
 }
 
@@ -59,7 +66,7 @@ async function createImageChunksGUI(start, end) {
   if (response.result) {
     alertSuccess(response.message);
   } else {
-    alertError(missingFilesResponse.message);
+    alertError(response.message);
   }
 }
 
@@ -68,7 +75,7 @@ async function fetchAndDownloadImageGUI() {
   if (response.result) {
     alertSuccess(response.message);
   } else {
-    alertError(missingFilesResponse.message);
+    alertError(response.message);
   }
 }
 
@@ -77,7 +84,7 @@ async function renderAnimationGUI() {
   if (response) {
     alertSuccess(response.message);
   } else {
-    alertError(missingFilesResponse.message);
+    alertError(response.message);
   }
 }
 
@@ -86,7 +93,7 @@ async function checkMissingFilesGUI() {
   if (response) {
     alertSuccess(response.message);
   } else {
-    alertError(missingFilesResponse.message);
+    alertError(response.message);
   }
 }
 
@@ -107,12 +114,6 @@ function isFileCSV(file) {
   return file && file.type === acceptedCSVType;
 }
 
-function processCSV(data) {
-  console.log("CSV Data:", data);
-  // Add logic here to handle the CSV data
-}
-
-// Make sure file is an csv
 function isFileCSV(file) {
   const acceptedCSVType = "text/csv";
   return file && file.type === acceptedCSVType;
