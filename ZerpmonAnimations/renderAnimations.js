@@ -2,6 +2,9 @@ const { spawn } = require("child_process");
 const path = require("path");
 const fs = require("fs").promises;
 const fsO = require("fs");
+const generateSpritesheet = require("./generateSpritesheet");
+const uploadToCloudFlareImages = require("./uploadToCloudflareImages");
+const uploadToCloudFlareR2 = require("./uploadToCloudflareR2");
 
 async function renderBlenderAnimation(
   blenderFilePath,
@@ -42,79 +45,7 @@ async function renderBlenderAnimation(
   });
 }
 
-async function generateSpritesheet(nodeScriptPath, textureName) {
-  return new Promise((resolve, reject) => {
-    const renderSpritesheet = spawn("node", [nodeScriptPath, textureName]);
-
-    renderSpritesheet.stdout.on("data", (nodeData) => {
-      console.log(`${nodeData}`);
-    });
-
-    renderSpritesheet.stderr.on("data", (nodeErrorData) => {
-      console.error(`Node.js script ERROR: ${nodeErrorData}`);
-    });
-
-    renderSpritesheet.on("close", (nodeCode) => {
-      if (nodeCode !== 0) {
-        reject(`Error executing Node.js script. Exit code: ${nodeCode}`);
-      } else {
-        resolve();
-      }
-    });
-  });
-}
-
-async function uploadToCloudFlareImages(nodeScriptPath, zerpmon_id) {
-  return new Promise((resolve, reject) => {
-    const renderSpritesheet = spawn("node", [nodeScriptPath, zerpmon_id]);
-
-    renderSpritesheet.stdout.on("data", (nodeData) => {
-      console.log(`${nodeData}`);
-    });
-
-    renderSpritesheet.stderr.on("data", (nodeErrorData) => {
-      console.error(
-        `uploadToCloudFlareImages.js script ERROR: ${nodeErrorData}`
-      );
-    });
-
-    renderSpritesheet.on("close", (nodeCode) => {
-      if (nodeCode !== 0) {
-        reject(
-          `Error executing uploadToCloudFlareImages.js script. Exit code: ${nodeCode}`
-        );
-      } else {
-        resolve();
-      }
-    });
-  });
-}
-
-async function uploadToCloudFlareR2(nodeScriptPath, zerpmon_id) {
-  return new Promise((resolve, reject) => {
-    const renderSpritesheet = spawn("node", [nodeScriptPath, zerpmon_id]);
-
-    renderSpritesheet.stdout.on("data", (nodeData) => {
-      console.log(`${nodeData}`);
-    });
-
-    renderSpritesheet.stderr.on("data", (nodeErrorData) => {
-      console.error(`uploadToCloudFlareR2.js script ERROR: ${nodeErrorData}`);
-    });
-
-    renderSpritesheet.on("close", (nodeCode) => {
-      if (nodeCode !== 0) {
-        reject(
-          `Error executing uploadToCloudFlareR2.js script. Exit code: ${nodeCode}`
-        );
-      } else {
-        resolve();
-      }
-    });
-  });
-}
-
-async function main() {
+async function main(animationsPerProcess) {
   const errorLogFilePath = path.resolve(__dirname, "./logs/all/error.log");
   const successLogFilePath = path.resolve(__dirname, "./logs/all/success.log");
   const uploadImageToCloudfareErrorLogFilePath = path.resolve(
@@ -160,7 +91,8 @@ async function main() {
     "ZerpmonDamageL",
     "ZerpmonDamageR",
   ];
-  const [animationName, imageFilePath] = process.argv.slice(2);
+
+  // const [animationName, imageFilePath] = process.argv.slice(2);
   const pythonScriptPath = "generateImageSequence.py";
   const directoryPath = `blenderAnimations/`;
 
@@ -171,36 +103,46 @@ async function main() {
     const files = await fs.readdir(zerpmonImagesPath);
 
     for (const file of files) {
+      const fileName = file.slice(0, -4);
       try {
-        for (const blenderAnimationFile of blenderAnimationFiles) {
-          const filePath = path.join(
-            directoryPath,
-            `${blenderAnimationFile}.blend`
+        for (
+          let i = 0;
+          i < blenderAnimationFiles.length;
+          i += animationsPerProcess
+        ) {
+          const promises = [];
+          const fileSlice = blenderAnimationFiles.slice(
+            i,
+            i + animationsPerProcess
           );
-          await renderBlenderAnimation(
-            filePath,
-            pythonScriptPath,
-            path.resolve(zerpmonImagesPath, file),
-            file.slice(0, -4),
-            blenderAnimationFile
-          );
+          for (const animationFile of fileSlice) {
+            const filePath = `${directoryPath}${animationFile}.blend`;
+            promises.push(
+              renderBlenderAnimation(
+                filePath,
+                pythonScriptPath,
+                path.resolve(zerpmonImagesPath, file),
+                fileName,
+                animationFile
+              )
+            );
+          }
+          await Promise.all(promises);
         }
+        await generateSpritesheet(fileName);
 
-        await generateSpritesheet("generateSpritesheet.js", file.slice(0, -4));
-
-        await uploadToCloudFlareImages(
-          "uploadToCloudflareImages.js",
-          file.slice(0, -4)
+        await uploadToCloudFlareImages(fileName);
+        console.log(
+          `Images uploaded successfully for ${fileName} to Cloudflare.`
         );
 
-        await uploadToCloudFlareR2(
-          "uploadToCloudflareR2.js",
-          file.slice(0, -4)
-        );
-        await fs.appendFile(successLogFilePath, `${file.slice(0, -4)}\n`);
-        
+        await uploadToCloudFlareR2(fileName);
+        console.log(`R2 uploaded successfully for ${fileName} to Cloudflare.`);
+
+        await fs.appendFile(successLogFilePath, `${fileName}\n`);
       } catch (error) {
-        await fs.appendFile(errorLogFilePath, `${file.slice(0, -4)}\n`);
+        console.error(`Error processing file ${fileName}: ${error}`);
+        await fs.appendFile(errorLogFilePath, `${fileName}\n`);
       }
     }
 
@@ -210,4 +152,5 @@ async function main() {
   }
 }
 
-main();
+const animationsPerProcess = 1;
+main(animationsPerProcess);
