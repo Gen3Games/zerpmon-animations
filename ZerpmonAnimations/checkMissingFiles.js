@@ -5,7 +5,11 @@ const path = require("path");
 const types = ["left", "right"];
 const scales = ["05x", "075x", "1x"];
 
-async function uploadToCloudFlareImages(chunkfilePath, chunkName) {
+async function checkMissingFiles() {
+  const CHUNKSET = "0_imageSet";
+
+  const chunkfilePath = path.resolve(__dirname, `./imageChunks/${CHUNKSET}`);
+
   LogFilePathForcheckMissingFilesImages = path.resolve(
     __dirname,
     "./logs/checkMissingFiles/images"
@@ -28,11 +32,11 @@ async function uploadToCloudFlareImages(chunkfilePath, chunkName) {
 
   LogFileForcheckMissingFilesImages = path.resolve(
     LogFilePathForcheckMissingFilesImages,
-    `${chunkName}.log`
+    `${CHUNKSET}.log`
   );
   LogFileForcheckMissingFilesR2 = path.resolve(
     LogFilePathForcheckMissingFilesR2,
-    `${chunkName}.log`
+    `${CHUNKSET}.log`
   );
 
   fs.openSync(path.resolve(LogFileForcheckMissingFilesImages), "w");
@@ -96,10 +100,11 @@ async function uploadToCloudFlareImages(chunkfilePath, chunkName) {
       console.log("image count : ", imageCount);
     }
   }
+
+  return Promise.resolve({
+    result: true,
+    message: "Checked For Missing Files!",
+  });
 }
 
-// update this accordingly
-const CHUNKSET = "0_imageSet";
-
-const chunkfilePath = path.resolve(__dirname, `./imageChunks/${CHUNKSET}`);
-uploadToCloudFlareImages(chunkfilePath, CHUNKSET);
+module.exports = checkMissingFiles;

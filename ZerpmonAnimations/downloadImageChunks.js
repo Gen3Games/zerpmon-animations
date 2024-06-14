@@ -10,7 +10,11 @@ async function downloadImage(url, destinationPath) {
   console.log("Image downloaded successfully:", destinationPath);
 }
 
-async function fetchAndDownloadImage(destinationFolder, chunkfilePath) {
+async function fetchAndDownloadImage() {
+  const CHUNKSET = "0_imageSet";
+
+  const destinationFolder = path.resolve(__dirname, "./ZerpmonImages");
+  const chunkfilePath = path.resolve(__dirname, `./imageChunks/${CHUNKSET}`);
   if (fs.existsSync(destinationFolder)) {
     fs.rmSync(`${destinationFolder}`, { recursive: true, force: true });
   }
@@ -50,14 +54,14 @@ async function fetchAndDownloadImage(destinationFolder, chunkfilePath) {
         }
       }
     }
+    return Promise.resolve({
+      result: true,
+      message: "Files successfully downloaded!",
+    });
   } catch (error) {
     console.error("Huge Error downloading images:", error.message);
+    return Promise.resolve({ result: false, message: `Error : ${error}` });
   }
 }
 
-// update this accordingly
-const CHUNKSET = "0_imageSet";
-
-const destinationFolder = path.resolve(__dirname, "./ZerpmonImages");
-const chunkfilePath = path.resolve(__dirname, `./imageChunks/${CHUNKSET}`);
-fetchAndDownloadImage(destinationFolder, chunkfilePath);
+module.exports = fetchAndDownloadImage;

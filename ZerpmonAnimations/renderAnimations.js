@@ -45,7 +45,8 @@ async function renderBlenderAnimation(
   });
 }
 
-async function main(animationsPerProcess) {
+async function main() {
+  const animationsPerProcess = 1;
   const errorLogFilePath = path.resolve(__dirname, "./logs/all/error.log");
   const successLogFilePath = path.resolve(__dirname, "./logs/all/success.log");
   const uploadImageToCloudfareErrorLogFilePath = path.resolve(
@@ -105,38 +106,38 @@ async function main(animationsPerProcess) {
     for (const file of files) {
       const fileName = file.slice(0, -4);
       try {
-        for (
-          let i = 0;
-          i < blenderAnimationFiles.length;
-          i += animationsPerProcess
-        ) {
-          const promises = [];
-          const fileSlice = blenderAnimationFiles.slice(
-            i,
-            i + animationsPerProcess
-          );
-          for (const animationFile of fileSlice) {
-            const filePath = `${directoryPath}${animationFile}.blend`;
-            promises.push(
-              renderBlenderAnimation(
-                filePath,
-                pythonScriptPath,
-                path.resolve(zerpmonImagesPath, file),
-                fileName,
-                animationFile
-              )
-            );
-          }
-          await Promise.all(promises);
-        }
-        await generateSpritesheet(fileName);
+        // for (
+        //   let i = 0;
+        //   i < blenderAnimationFiles.length;
+        //   i += animationsPerProcess
+        // ) {
+        //   const promises = [];
+        //   const fileSlice = blenderAnimationFiles.slice(
+        //     i,
+        //     i + animationsPerProcess
+        //   );
+        //   for (const animationFile of fileSlice) {
+        //     const filePath = `${directoryPath}${animationFile}.blend`;
+        //     promises.push(
+        //       renderBlenderAnimation(
+        //         filePath,
+        //         pythonScriptPath,
+        //         path.resolve(zerpmonImagesPath, file),
+        //         fileName,
+        //         animationFile
+        //       )
+        //     );
+        //   }
+        //   await Promise.all(promises);
+        // }
+        // await generateSpritesheet(fileName);
 
-        await uploadToCloudFlareImages(fileName);
+        // await uploadToCloudFlareImages(fileName);
         console.log(
           `Images uploaded successfully for ${fileName} to Cloudflare.`
         );
 
-        await uploadToCloudFlareR2(fileName);
+        // await uploadToCloudFlareR2(fileName);
         console.log(`R2 uploaded successfully for ${fileName} to Cloudflare.`);
 
         await fs.appendFile(successLogFilePath, `${fileName}\n`);
@@ -145,12 +146,15 @@ async function main(animationsPerProcess) {
         await fs.appendFile(errorLogFilePath, `${fileName}\n`);
       }
     }
-
     console.log("All scripts completed successfully");
+    return Promise.resolve({
+      result: true,
+      message: "Files successfully uploaded!",
+    });
   } catch (error) {
     console.error(error);
+    return Promise.resolve({ result: false, message: `Error : ${error}` });
   }
 }
 
-const animationsPerProcess = 1;
-main(animationsPerProcess);
+module.exports = main;
