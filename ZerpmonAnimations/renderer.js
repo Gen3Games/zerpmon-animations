@@ -3,6 +3,7 @@ const startInput = document.querySelector("#start");
 const endInput = document.querySelector("#end");
 const csv = document.querySelector("#csv");
 const renderCsvButton = document.querySelector("#render-csv");
+const renderNumberButton = document.querySelector("#render-number");
 const filenameDisplay = document.querySelector("#filename");
 const spinner = document.querySelector("#spinner");
 let selectedFile = null;
@@ -14,6 +15,7 @@ async function startRender(e) {
 
   try {
     spinner.style.display = "block";
+    renderNumberButton.disabled = true;
     await createImageChunksGUI(start, end);
     await fetchAndDownloadImageGUI();
     await renderAnimationGUI();
@@ -22,6 +24,7 @@ async function startRender(e) {
     console.error("Error : ", error);
   } finally {
     spinner.style.display = "none";
+    renderNumberButton.disabled = false;
   }
 }
 
@@ -34,6 +37,7 @@ async function startRenderWithCSV(event) {
   }
 
   spinner.style.display = "block";
+  renderCsvButton.disabled = true;
   const reader = new FileReader();
   reader.onload = async function (event) {
     const csvData = event.target.result;
@@ -47,6 +51,7 @@ async function startRenderWithCSV(event) {
       console.error("Error : ", error);
     } finally {
       spinner.style.display = "none";
+      renderCsvButton.disabled = false;
     }
   };
   reader.readAsText(selectedFile);

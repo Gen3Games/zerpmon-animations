@@ -9,7 +9,7 @@ let mainWindow;
 // Main Window
 function createMainWindow() {
   mainWindow = new BrowserWindow({
-    width: isDev ? 1000 : 500,
+    width: 1000,
     height: 600,
     resizable: isDev,
     webPreferences: {

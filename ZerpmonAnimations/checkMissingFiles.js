@@ -1,23 +1,23 @@
 const fetch = require("node-fetch");
 const fs = require("fs");
 const path = require("path");
+const os = require("os");
 
 const types = ["left", "right"];
 const scales = ["05x", "075x", "1x"];
 
 async function checkMissingFiles() {
   const CHUNKSET = "0_imageSet";
+  const baseDir = path.join(os.homedir(), "Desktop", "ZerpmonAnimations");
 
-  const chunkfilePath = path.resolve(__dirname, `./imageChunks/${CHUNKSET}`);
+  const chunkfilePath = path.join(`${baseDir}/imageChunks/${CHUNKSET}`);
 
-  LogFilePathForcheckMissingFilesImages = path.resolve(
-    __dirname,
-    "./logs/checkMissingFiles/images"
+  LogFilePathForcheckMissingFilesImages = path.join(
+    `${baseDir}/logs/checkMissingFiles/images`
   );
 
-  LogFilePathForcheckMissingFilesR2 = path.resolve(
-    __dirname,
-    "./logs/checkMissingFiles/r2"
+  LogFilePathForcheckMissingFilesR2 = path.join(
+    `${baseDir}/logs/checkMissingFiles/r2`
   );
 
   // create log directories if they don't exist
@@ -55,9 +55,6 @@ async function checkMissingFiles() {
 
           let imagesUrl = `https://imagedelivery.net/9i0Mt_dC7lopRIG36ZQvKw/${dataPointId}-spritesheet.png/public`;
           let r2Url = `https://cfr2.zerpmon.world/zerpmon-spritesheet-manifest%2F${dataPointId}.json`;
-
-          console.log(imagesUrl);
-          console.log(r2Url);
 
           let options = {
             method: "GET",
@@ -97,7 +94,6 @@ async function checkMissingFiles() {
         }
       }
       imageCount++;
-      console.log("image count : ", imageCount);
     }
   }
 

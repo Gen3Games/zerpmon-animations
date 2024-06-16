@@ -1,16 +1,24 @@
 const fs = require("fs");
 const path = require("path");
+const os = require("os");
 
 async function createImageChunksWithCSV(data) {
   try {
+    const baseDir = path.join(os.homedir(), "Desktop", "ZerpmonAnimations");
+
+    if (!fs.existsSync(baseDir)) {
+      fs.mkdirSync(baseDir, { recursive: true });
+    }
+
     const lines = data.trim().split("\n");
     let chunkNumber = 0;
-    const destinationFolder = path.resolve(__dirname, "./imageChunks");
+    const destinationFolder = path.join(baseDir, "imageChunks");
+
     const filename = `${chunkNumber}_imageSet`;
     const destinationPath = path.join(destinationFolder, filename);
 
     if (!fs.existsSync(destinationFolder)) {
-      fs.mkdirSync(destinationFolder);
+      fs.mkdirSync(destinationFolder, { recursive: true });
     }
 
     if (fs.existsSync(destinationPath)) {
@@ -21,7 +29,6 @@ async function createImageChunksWithCSV(data) {
       const fields = line.split(",");
       const ZerpmonNumber = fields[0];
 
-      // Check if the first column is a number
       if (!isNaN(ZerpmonNumber) && ZerpmonNumber !== "") {
         const imageUrl = `https://imagedelivery.net/9i0Mt_dC7lopRIG36ZQvKw/zerpmon-full-art-${ZerpmonNumber}.png/w=3400`;
         fs.appendFileSync(

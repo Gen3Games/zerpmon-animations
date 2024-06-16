@@ -2,9 +2,17 @@ const { spawn } = require("child_process");
 const path = require("path");
 const fs = require("fs").promises;
 const fsO = require("fs");
+const os = require("os");
 const generateSpritesheet = require("./generateSpritesheet");
 const uploadToCloudFlareImages = require("./uploadToCloudflareImages");
 const uploadToCloudFlareR2 = require("./uploadToCloudflareR2");
+
+const blenderExecutable =
+  os.platform() === "win32"
+    ? "C:\\Program Files\\Blender Foundation\\Blender 2.91\\blender.exe"
+    : "/Applications/Blender.app/Contents/MacOS/Blender";
+
+const baseDir = path.join(os.homedir(), "Desktop", "ZerpmonAnimations");
 
 async function renderBlenderAnimation(
   blenderFilePath,
@@ -47,21 +55,19 @@ async function renderBlenderAnimation(
 
 async function main() {
   const animationsPerProcess = 1;
-  const errorLogFilePath = path.resolve(__dirname, "./logs/all/error.log");
-  const successLogFilePath = path.resolve(__dirname, "./logs/all/success.log");
-  const uploadImageToCloudfareErrorLogFilePath = path.resolve(
-    __dirname,
-    "./logs/all/error_upload_image.log"
+  const errorLogFilePath = path.join(`${baseDir}/logs/all/error.log`);
+  const successLogFilePath = path.join(`${baseDir}/logs/all/success.log`);
+  const uploadImageToCloudfareErrorLogFilePath = path.join(
+    `${baseDir}/logs/all/error_upload_image.log`
   );
-  const uploadJsonToCloudfareR2ErrorLogFilePath = path.resolve(
-    __dirname,
-    "./logs/all/error_upload_r2.log"
+  const uploadJsonToCloudfareR2ErrorLogFilePath = path.join(
+    `${baseDir}/logs/all/error_upload_r2.log`
   );
 
-  LogFilePathForRenderAnimation = path.resolve(__dirname, "./logs/all");
+  LogFilePathForRenderAnimation = path.join(`${baseDir}/logs/all`);
 
-  spritesheetsFilePath = path.resolve(__dirname, "./Spritesheets");
-  pngSequencesFilePath = path.resolve(__dirname, "./pngSequences");
+  spritesheetsFilePath = path.join(`${baseDir}/Spritesheets`);
+  pngSequencesFilePath = path.join(`${baseDir}/pngSequences`);
 
   // create log directories if they don't exist
   if (!fsO.existsSync(LogFilePathForRenderAnimation)) {
@@ -98,7 +104,7 @@ async function main() {
   const directoryPath = `blenderAnimations/`;
 
   // use absolute path for ZerpmonImages/ directory
-  const zerpmonImagesPath = path.resolve(__dirname, "./ZerpmonImages/");
+  const zerpmonImagesPath = path.join(`${baseDir}/ZerpmonImages/`);
 
   try {
     const files = await fs.readdir(zerpmonImagesPath);
@@ -132,12 +138,12 @@ async function main() {
         }
         await generateSpritesheet(fileName);
 
-        await uploadToCloudFlareImages(fileName);
+        // await uploadToCloudFlareImages(fileName);
         console.log(
           `Images uploaded successfully for ${fileName} to Cloudflare.`
         );
 
-        await uploadToCloudFlareR2(fileName);
+        // await uploadToCloudFlareR2(fileName);
         console.log(`R2 uploaded successfully for ${fileName} to Cloudflare.`);
 
         await fs.appendFile(successLogFilePath, `${fileName}\n`);

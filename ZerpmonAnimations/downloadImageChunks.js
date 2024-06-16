@@ -1,6 +1,7 @@
 const fetch = require("node-fetch");
 const fs = require("fs");
 const path = require("path");
+const os = require("os");
 
 // Function to download image from URL
 async function downloadImage(url, destinationPath) {
@@ -11,26 +12,25 @@ async function downloadImage(url, destinationPath) {
 }
 
 async function fetchAndDownloadImage() {
+  const baseDir = path.join(os.homedir(), "Desktop", "ZerpmonAnimations");
+
   const CHUNKSET = "0_imageSet";
 
-  const destinationFolder = path.resolve(__dirname, "./ZerpmonImages");
-  const chunkfilePath = path.resolve(__dirname, `./imageChunks/${CHUNKSET}`);
+  const destinationFolder = path.join(`${baseDir}/ZerpmonImages`);
+  const chunkfilePath = path.join(`${baseDir}/imageChunks/${CHUNKSET}`);
   if (fs.existsSync(destinationFolder)) {
     fs.rmSync(`${destinationFolder}`, { recursive: true, force: true });
   }
   fs.mkdirSync(destinationFolder);
 
-  LogFilePathForDownload = path.resolve(__dirname, "./logs/download");
+  LogFilePathForDownload = path.join(`${baseDir}/logs/download`);
 
   if (!fs.existsSync(LogFilePathForDownload)) {
     fs.mkdirSync(LogFilePathForDownload, { recursive: true });
   }
 
-  const errroLogFilePath = path.resolve(__dirname, "./logs/download/error.log");
-  const successLogFilePath = path.resolve(
-    __dirname,
-    "./logs/download/success.log"
-  );
+  const errroLogFilePath = path.join(`${baseDir}/logs/download/error.log`);
+  const successLogFilePath = path.join(`${baseDir}/logs/download/success.log`);
   fs.openSync(errroLogFilePath, "w");
   fs.openSync(successLogFilePath, "w");
 
