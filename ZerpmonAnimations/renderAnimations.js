@@ -99,11 +99,22 @@ async function main() {
     "ZerpmonJiggleR",
   ];
 
-  // const [animationName, imageFilePath] = process.argv.slice(2);
-  const pythonScriptPath = "generateImageSequence.py";
-  const directoryPath = `blenderAnimations/`;
+  //Paths for Prod ENV
+  const pythonScriptPath = `${path.join(
+    process.resourcesPath,
+    "extraResources",
+    "generateImageSequence.py"
+  )}`;
+  const directoryPath = `${path.join(
+    process.resourcesPath,
+    "extraResources",
+    "blenderAnimations/"
+  )}`;
 
-  // use absolute path for ZerpmonImages/ directory
+  //Paths for Dev ENV
+  // const pythonScriptPath = "generateImageSequence.py";
+  // const directoryPath = `blenderAnimations/`;
+
   const zerpmonImagesPath = path.join(`${baseDir}/ZerpmonImages/`);
 
   try {
@@ -123,19 +134,11 @@ async function main() {
             i + animationsPerProcess
           );
           for (const animationFile of fileSlice) {
-            const filePath = `${path.join(
-              process.resourcesPath,
-              "extraResources",
-              directoryPath
-            )}${animationFile}.blend`;
+            const filePath = `${directoryPath}${animationFile}.blend`;
             promises.push(
               renderBlenderAnimation(
                 filePath,
-                path.join(
-                  process.resourcesPath,
-                  "extraResources",
-                  pythonScriptPath
-                ),
+                pythonScriptPath,
                 path.resolve(zerpmonImagesPath, file),
                 fileName,
                 animationFile

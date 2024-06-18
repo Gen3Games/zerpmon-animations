@@ -63,6 +63,7 @@ async function processCSVDataGUI(csvData) {
     alertSuccess(response.message);
   } else {
     alertError(response.message);
+    throw new Error(response.message);
   }
 }
 
@@ -72,6 +73,7 @@ async function createImageChunksGUI(start, end) {
     alertSuccess(response.message);
   } else {
     alertError(response.message);
+    throw new Error(response.message);
   }
 }
 
@@ -81,6 +83,7 @@ async function fetchAndDownloadImageGUI() {
     alertSuccess(response.message);
   } else {
     alertError(response.message);
+    throw new Error(response.message);
   }
 }
 
@@ -140,8 +143,8 @@ function alertSuccess(message) {
 function alertError(message) {
   Toastify.toast({
     text: message,
-    duration: 5000,
-    close: false,
+    duration: 10000,
+    close: true,
     style: {
       background: "red",
       color: "white",

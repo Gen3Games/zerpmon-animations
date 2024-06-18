@@ -74,9 +74,9 @@ async function generateSpritesheet(zerpmonName) {
           fs.writeFileSync(
             path.join(
               spritesheetPath,
-              `${item.name.slice(0, -4)}_left_${options.scale
+              `${item.name.slice(0, -4)}-left-${options.scale
                 .toString()
-                .replace(/\./g, "")}x.png`
+                .replace(/\./g, "")}x-spritesheet.png`
             ),
             item.buffer
           );
@@ -86,7 +86,7 @@ async function generateSpritesheet(zerpmonName) {
           fs.writeFileSync(
             path.join(
               spritesheetPath,
-              `${item.name.slice(0, -5)}_left_${options.scale
+              `${item.name.slice(0, -5)}-left-${options.scale
                 .toString()
                 .replace(/\./g, "")}x.json`
             ),
@@ -103,9 +103,9 @@ async function generateSpritesheet(zerpmonName) {
           fs.writeFileSync(
             path.join(
               spritesheetPath,
-              `${item.name.slice(0, -4)}_right_${options.scale
+              `${item.name.slice(0, -4)}-right-${options.scale
                 .toString()
-                .replace(/\./g, "")}x.png`
+                .replace(/\./g, "")}x-spritesheet.png`
             ),
             item.buffer
           );
@@ -115,7 +115,7 @@ async function generateSpritesheet(zerpmonName) {
           fs.writeFileSync(
             path.join(
               spritesheetPath,
-              `${item.name.slice(0, -5)}_right_${options.scale
+              `${item.name.slice(0, -5)}-right-${options.scale
                 .toString()
                 .replace(/\./g, "")}x.json`
             ),

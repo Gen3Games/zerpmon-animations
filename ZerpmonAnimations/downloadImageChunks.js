@@ -3,14 +3,6 @@ const fs = require("fs");
 const path = require("path");
 const os = require("os");
 
-// Function to download image from URL
-async function downloadImage(url, destinationPath) {
-  const response = await fetch(url);
-  const buffer = await response.buffer();
-  fs.writeFileSync(destinationPath, buffer);
-  console.log("Image downloaded successfully:", destinationPath);
-}
-
 async function fetchAndDownloadImage() {
   const baseDir = path.join(os.homedir(), "Desktop", "ZerpmonAnimations");
 
@@ -46,7 +38,17 @@ async function fetchAndDownloadImage() {
         const filename = `${nftName}.png`;
         const destinationPath = path.join(destinationFolder, filename);
         try {
-          await downloadImage(imageUrl, destinationPath);
+          const response = await fetch(imageUrl);
+          if (response.status === 200) {
+            const buffer = await response.buffer();
+            fs.writeFileSync(destinationPath, buffer);
+            console.log("Image downloaded successfully:", destinationPath);
+          } else {
+            return Promise.resolve({
+              result: false,
+              message: `Error : Zerpmon ${nftName} is not available`,
+            });
+          }
           fs.appendFileSync(successLogFilePath, `${nftName},${imageUrl}\n`);
         } catch (error) {
           fs.appendFileSync(errroLogFilePath, `${nftName},${imageUrl}\n`);

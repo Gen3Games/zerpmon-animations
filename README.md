@@ -1,26 +1,35 @@
 # How to generate the zerpmon animations
 
-1. Place the ZerpmonAnimations folder in Desktop<br>
+Setup Blender CLI on the machine<br>
 
-2. Open the ZerpmonAnimations folder through the terminal
+Install Blender - [https://www.blender.org/download/](https://www.blender.org/download/)
 
-   ```sh
-   cd ZerpmonAnimations
-   ```
+## [Windows](https://docs.blender.org/manual/en/latest/advanced/command_line/launch/windows.html)
 
-3. Install dependencies
+1. Go to the location where Blender is installed</br>
+   (C:\Program Files\Blender Foundation\Blender\blender.exe)
 
-   ```sh
-   npm i
-   ```
+2. Copy the path
 
-4. Start rendering
+3. Add this path to your system `PATH` variable in the machine
+   https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/
 
-   ```sh
-   npm start
-   ```
+## [MacOS](https://docs.blender.org/manual/en/latest/advanced/command_line/launch/macos.html)
 
-5. After process is over check for files not uploaded in
-   ```sh
-   logs/checkMissingFiles/images
-   ```
+1. Copy the location where Blender is installed</br>
+   ( /Applications/Blender.app/Contents/MacOS/Blender )
+
+2. Add this directory to your machine `PATH`
+
+## Rendering
+
+- Open the `ZerpmonAnimations` Application
+
+- Insert the relevant data and Start "Render"
+
+- A folder with the name "ZerpmonAnimations" will appear in your Desktop where you can check the rendered animations
+
+- After process is over check for error files not uploaded in
+  ```sh
+  Desktop/ZerpmonAnimations/logs/checkMissingFiles/images
+  ```

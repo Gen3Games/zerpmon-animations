@@ -1,7 +1,6 @@
 const path = require("path");
 const { app, BrowserWindow, ipcMain } = require("electron");
 
-const isDev = process.env.NODE_ENV !== "production";
 const isMac = process.platform === "darwin";
 
 let mainWindow;
@@ -10,8 +9,8 @@ let mainWindow;
 function createMainWindow() {
   mainWindow = new BrowserWindow({
     width: 1000,
-    height: 600,
-    resizable: isDev,
+    height: 700,
+    resizable: false,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: true,
@@ -20,10 +19,7 @@ function createMainWindow() {
     icon: "./icon/zerpmon-logo.png",
   });
 
-  // Show devtools automatically if in development
-  if (isDev) {
-    mainWindow.webContents.openDevTools();
-  }
+  mainWindow.webContents.openDevTools();
 
   mainWindow.loadFile(path.join(__dirname, "./index.html"));
 }
