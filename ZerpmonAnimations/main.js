@@ -17,6 +17,7 @@ function createMainWindow() {
       contextIsolation: true,
       preload: path.join(__dirname, "preload.js"),
     },
+    icon: "./icon/zerpmon-logo.png",
   });
 
   // Show devtools automatically if in development

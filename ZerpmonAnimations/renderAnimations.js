@@ -9,7 +9,7 @@ const uploadToCloudFlareR2 = require("./uploadToCloudflareR2");
 
 const blenderExecutable =
   os.platform() === "win32"
-    ? "C:\\Program Files\\Blender Foundation\\Blender 2.91\\blender.exe"
+    ? "blender"
     : "/Applications/Blender.app/Contents/MacOS/Blender";
 
 const baseDir = path.join(os.homedir(), "Desktop", "ZerpmonAnimations");
@@ -22,7 +22,7 @@ async function renderBlenderAnimation(
   imageName
 ) {
   return new Promise((resolve, reject) => {
-    const renderAnimation = spawn("blender", [
+    const renderAnimation = spawn(blenderExecutable, [
       "-noaudio",
       "-b",
       blenderFilePath,
@@ -93,10 +93,10 @@ async function main() {
     "ZerpmonCardAppearanceR",
     "ZerpmonCardDestructionL",
     "ZerpmonCardDestructionR",
-    "ZerpmonJiggleL",
-    "ZerpmonJiggleR",
     "ZerpmonDamageL",
     "ZerpmonDamageR",
+    "ZerpmonJiggleL",
+    "ZerpmonJiggleR",
   ];
 
   // const [animationName, imageFilePath] = process.argv.slice(2);
@@ -123,11 +123,19 @@ async function main() {
             i + animationsPerProcess
           );
           for (const animationFile of fileSlice) {
-            const filePath = `${directoryPath}${animationFile}.blend`;
+            const filePath = `${path.join(
+              process.resourcesPath,
+              "extraResources",
+              directoryPath
+            )}${animationFile}.blend`;
             promises.push(
               renderBlenderAnimation(
                 filePath,
-                pythonScriptPath,
+                path.join(
+                  process.resourcesPath,
+                  "extraResources",
+                  pythonScriptPath
+                ),
                 path.resolve(zerpmonImagesPath, file),
                 fileName,
                 animationFile
@@ -138,12 +146,12 @@ async function main() {
         }
         await generateSpritesheet(fileName);
 
-        // await uploadToCloudFlareImages(fileName);
+        await uploadToCloudFlareImages(fileName);
         console.log(
           `Images uploaded successfully for ${fileName} to Cloudflare.`
         );
 
-        // await uploadToCloudFlareR2(fileName);
+        await uploadToCloudFlareR2(fileName);
         console.log(`R2 uploaded successfully for ${fileName} to Cloudflare.`);
 
         await fs.appendFile(successLogFilePath, `${fileName}\n`);

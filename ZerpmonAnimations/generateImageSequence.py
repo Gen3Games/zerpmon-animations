@@ -33,7 +33,8 @@ if len(sys.argv) > 6:
     node.image = bpy.data.images.load(image_path)
 
     # Specify the output directory
-    output_directory = 'pngSequences/' + animation_name + '/'
+    home_directory = os.path.expanduser( '~' )
+    output_directory = home_directory +'/Desktop/ZerpmonAnimations/pngSequences/' + animation_name + '/'
     print(output_directory);
 
     # Create the output directory if it doesn't exist
