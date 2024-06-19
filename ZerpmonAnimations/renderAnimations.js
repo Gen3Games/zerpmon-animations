@@ -53,8 +53,8 @@ async function renderBlenderAnimation(
   });
 }
 
-async function main() {
-  const animationsPerProcess = 1;
+async function main(processCount) {
+  const animationsPerProcess = processCount;
   const errorLogFilePath = path.join(`${baseDir}/logs/all/error.log`);
   const successLogFilePath = path.join(`${baseDir}/logs/all/success.log`);
   const uploadImageToCloudfareErrorLogFilePath = path.join(

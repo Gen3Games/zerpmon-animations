@@ -1,6 +1,7 @@
 const form = document.querySelector("#zerp-form");
 const startInput = document.querySelector("#start");
 const endInput = document.querySelector("#end");
+const processCountInput = document.querySelector("#concurrency");
 const csv = document.querySelector("#csv");
 const renderCsvButton = document.querySelector("#render-csv");
 const renderNumberButton = document.querySelector("#render-number");
@@ -12,13 +13,14 @@ async function startRender(e) {
   e.preventDefault();
   const start = startInput.value;
   const end = endInput.value;
+  const processCount = processCountInput.value;
 
   try {
     spinner.style.display = "block";
     renderNumberButton.disabled = true;
     await createImageChunksGUI(start, end);
     await fetchAndDownloadImageGUI();
-    await renderAnimationGUI();
+    await renderAnimationGUI(processCount);
     await checkMissingFilesGUI();
   } catch (error) {
     console.error("Error : ", error);
@@ -36,6 +38,14 @@ async function startRenderWithCSV(event) {
     return;
   }
 
+  const processCount = processCountInput.value;
+
+  if (!processCount) {
+    alertError("Please enter a process count");
+    return;
+  }
+
+  console.log(processCount);
   spinner.style.display = "block";
   renderCsvButton.disabled = true;
   const reader = new FileReader();
@@ -45,7 +55,7 @@ async function startRenderWithCSV(event) {
     try {
       await processCSVDataGUI(csvData);
       await fetchAndDownloadImageGUI();
-      await renderAnimationGUI();
+      await renderAnimationGUI(processCount);
       await checkMissingFilesGUI();
     } catch (error) {
       console.error("Error : ", error);
@@ -87,8 +97,8 @@ async function fetchAndDownloadImageGUI() {
   }
 }
 
-async function renderAnimationGUI() {
-  const response = await window.main();
+async function renderAnimationGUI(processCount) {
+  const response = await window.main(processCount);
   if (response) {
     alertSuccess(response.message);
   } else {
@@ -144,7 +154,7 @@ function alertError(message) {
   Toastify.toast({
     text: message,
     duration: 10000,
-    close: true,
+    close: false,
     style: {
       background: "red",
       color: "white",
