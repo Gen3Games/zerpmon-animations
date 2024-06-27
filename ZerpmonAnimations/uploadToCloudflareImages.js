@@ -17,11 +17,14 @@ async function uploadToCloudFlareImages(zerpmonNumber) {
       );
       const formData = new FormData();
       const spriteSheetImagePath = path.join(
-        `${baseDir}/Spritesheets/${zerpmonNumber}/${zerpmonNumber}-${type}-${scale}.png`
+        `${baseDir}/Spritesheets/${zerpmonNumber}/${zerpmonNumber}-${type}-${scale}-spritesheet.png`
       );
       const fileContent = fs.readFileSync(spriteSheetImagePath);
       formData.append("file", fileContent);
-      formData.append("id", `${zerpmonNumber}-${type}-${scale}.png`);
+      formData.append(
+        "id",
+        `${zerpmonNumber}-${type}-${scale}-spritesheet.png`
+      );
       let url =
         "https://api.cloudflare.com/client/v4/accounts/f2183aa9a7cd9634f52e696950d49f06/images/v1";
       let options = {

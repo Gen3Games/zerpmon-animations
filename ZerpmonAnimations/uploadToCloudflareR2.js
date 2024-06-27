@@ -18,7 +18,7 @@ async function uploadToCloudflareR2(zerpmonNumber) {
       try {
         // Read JSON file
         const spriteSheetJsonPath = path.join(
-          `${baseDir}/Spritesheets/${zerpmonNumber}/${zerpmonNumber}_${type}_${scale}.json`
+          `${baseDir}/Spritesheets/${zerpmonNumber}/${zerpmonNumber}-${type}-${scale}.json`
         );
         const jsonData = fs.readFileSync(spriteSheetJsonPath);
         // Make PUT request to API endpoint
