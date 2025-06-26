@@ -1,0 +1,544 @@
+{
+  "textures": [
+    {
+      "image": "bug-attack-spritesheet.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 3086,
+        "h": 3009
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "AttackL0001.png",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 1280,
+            "h": 700
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 1280,
+            "h": 700
+          },
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "w": 1280,
+            "h": 700
+          }
+        },
+        {
+          "filename": "AttackL0013.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1280,
+            "h": 700
+          },
+          "spriteSourceSize": {
+            "x": 401,
+            "y": 35,
+            "w": 865,
+            "h": 446
+          },
+          "frame": {
+            "x": 0,
+            "y": 700,
+            "w": 865,
+            "h": 446
+          }
+        },
+        {
+          "filename": "AttackL0012.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1280,
+            "h": 700
+          },
+          "spriteSourceSize": {
+            "x": 414,
+            "y": 36,
+            "w": 854,
+            "h": 443
+          },
+          "frame": {
+            "x": 865,
+            "y": 700,
+            "w": 854,
+            "h": 443
+          }
+        },
+        {
+          "filename": "AttackL0010.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1280,
+            "h": 700
+          },
+          "spriteSourceSize": {
+            "x": 418,
+            "y": 33,
+            "w": 854,
+            "h": 437
+          },
+          "frame": {
+            "x": 1280,
+            "y": 0,
+            "w": 854,
+            "h": 437
+          }
+        },
+        {
+          "filename": "AttackL0015.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1280,
+            "h": 700
+          },
+          "spriteSourceSize": {
+            "x": 424,
+            "y": 26,
+            "w": 849,
+            "h": 443
+          },
+          "frame": {
+            "x": 865,
+            "y": 1143,
+            "w": 849,
+            "h": 443
+          }
+        },
+        {
+          "filename": "AttackL0016.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1280,
+            "h": 700
+          },
+          "spriteSourceSize": {
+            "x": 462,
+            "y": 33,
+            "w": 811,
+            "h": 434
+          },
+          "frame": {
+            "x": 0,
+            "y": 1146,
+            "w": 811,
+            "h": 434
+          }
+        },
+        {
+          "filename": "AttackL0009.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1280,
+            "h": 700
+          },
+          "spriteSourceSize": {
+            "x": 424,
+            "y": 44,
+            "w": 841,
+            "h": 427
+          },
+          "frame": {
+            "x": 0,
+            "y": 1580,
+            "w": 841,
+            "h": 427
+          }
+        },
+        {
+          "filename": "AttackL0011.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1280,
+            "h": 700
+          },
+          "spriteSourceSize": {
+            "x": 421,
+            "y": 46,
+            "w": 850,
+            "h": 422
+          },
+          "frame": {
+            "x": 841,
+            "y": 1586,
+            "w": 850,
+            "h": 422
+          }
+        },
+        {
+          "filename": "AttackL0008.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1280,
+            "h": 700
+          },
+          "spriteSourceSize": {
+            "x": 424,
+            "y": 50,
+            "w": 833,
+            "h": 423
+          },
+          "frame": {
+            "x": 0,
+            "y": 2007,
+            "w": 833,
+            "h": 423
+          }
+        },
+        {
+          "filename": "AttackL0018.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1280,
+            "h": 700
+          },
+          "spriteSourceSize": {
+            "x": 551,
+            "y": 13,
+            "w": 720,
+            "h": 423
+          },
+          "frame": {
+            "x": 1691,
+            "y": 1586,
+            "w": 720,
+            "h": 423
+          }
+        },
+        {
+          "filename": "AttackL0014.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1280,
+            "h": 700
+          },
+          "spriteSourceSize": {
+            "x": 433,
+            "y": 51,
+            "w": 840,
+            "h": 410
+          },
+          "frame": {
+            "x": 1714,
+            "y": 1143,
+            "w": 840,
+            "h": 410
+          }
+        },
+        {
+          "filename": "AttackL0005.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1280,
+            "h": 700
+          },
+          "spriteSourceSize": {
+            "x": 436,
+            "y": 54,
+            "w": 833,
+            "h": 402
+          },
+          "frame": {
+            "x": 1719,
+            "y": 437,
+            "w": 833,
+            "h": 402
+          }
+        },
+        {
+          "filename": "AttackL0007.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1280,
+            "h": 700
+          },
+          "spriteSourceSize": {
+            "x": 425,
+            "y": 43,
+            "w": 829,
+            "h": 421
+          },
+          "frame": {
+            "x": 2134,
+            "y": 0,
+            "w": 829,
+            "h": 421
+          }
+        },
+        {
+          "filename": "AttackL0024.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1280,
+            "h": 700
+          },
+          "spriteSourceSize": {
+            "x": 736,
+            "y": 35,
+            "w": 534,
+            "h": 276
+          },
+          "frame": {
+            "x": 2552,
+            "y": 421,
+            "w": 534,
+            "h": 276
+          }
+        },
+        {
+          "filename": "AttackL0017.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1280,
+            "h": 700
+          },
+          "spriteSourceSize": {
+            "x": 517,
+            "y": 38,
+            "w": 756,
+            "h": 407
+          },
+          "frame": {
+            "x": 833,
+            "y": 2008,
+            "w": 756,
+            "h": 407
+          }
+        },
+        {
+          "filename": "AttackL0019.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1280,
+            "h": 700
+          },
+          "spriteSourceSize": {
+            "x": 606,
+            "y": 9,
+            "w": 667,
+            "h": 397
+          },
+          "frame": {
+            "x": 833,
+            "y": 2415,
+            "w": 667,
+            "h": 397
+          }
+        },
+        {
+          "filename": "AttackL0006.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1280,
+            "h": 700
+          },
+          "spriteSourceSize": {
+            "x": 423,
+            "y": 68,
+            "w": 785,
+            "h": 387
+          },
+          "frame": {
+            "x": 0,
+            "y": 2430,
+            "w": 785,
+            "h": 387
+          }
+        },
+        {
+          "filename": "AttackL0004.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1280,
+            "h": 700
+          },
+          "spriteSourceSize": {
+            "x": 430,
+            "y": 89,
+            "w": 807,
+            "h": 376
+          },
+          "frame": {
+            "x": 1589,
+            "y": 2009,
+            "w": 807,
+            "h": 376
+          }
+        },
+        {
+          "filename": "AttackL0021.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1280,
+            "h": 700
+          },
+          "spriteSourceSize": {
+            "x": 631,
+            "y": 31,
+            "w": 642,
+            "h": 355
+          },
+          "frame": {
+            "x": 2396,
+            "y": 2009,
+            "w": 642,
+            "h": 355
+          }
+        },
+        {
+          "filename": "AttackL0022.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1280,
+            "h": 700
+          },
+          "spriteSourceSize": {
+            "x": 684,
+            "y": 15,
+            "w": 588,
+            "h": 333
+          },
+          "frame": {
+            "x": 2411,
+            "y": 1553,
+            "w": 588,
+            "h": 333
+          }
+        },
+        {
+          "filename": "AttackL0003.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1280,
+            "h": 700
+          },
+          "spriteSourceSize": {
+            "x": 433,
+            "y": 138,
+            "w": 561,
+            "h": 329
+          },
+          "frame": {
+            "x": 2396,
+            "y": 2364,
+            "w": 561,
+            "h": 329
+          }
+        },
+        {
+          "filename": "AttackL0002.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1280,
+            "h": 700
+          },
+          "spriteSourceSize": {
+            "x": 429,
+            "y": 88,
+            "w": 767,
+            "h": 376
+          },
+          "frame": {
+            "x": 1500,
+            "y": 2415,
+            "w": 767,
+            "h": 376
+          }
+        },
+        {
+          "filename": "AttackL0023.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1280,
+            "h": 700
+          },
+          "spriteSourceSize": {
+            "x": 711,
+            "y": 13,
+            "w": 560,
+            "h": 316
+          },
+          "frame": {
+            "x": 2267,
+            "y": 2693,
+            "w": 560,
+            "h": 316
+          }
+        },
+        {
+          "filename": "AttackL0025.png",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 1280,
+            "h": 700
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 1280,
+            "h": 700
+          },
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "w": 1280,
+            "h": 700
+          }
+        },
+        {
+          "filename": "AttackL0020.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1280,
+            "h": 700
+          },
+          "spriteSourceSize": {
+            "x": 606,
+            "y": 9,
+            "w": 667,
+            "h": 397
+          },
+          "frame": {
+            "x": 833,
+            "y": 2415,
+            "w": 667,
+            "h": 397
+          }
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "app": "http://github.com/odrick/free-tex-packer-core",
+    "version": "0.3.4"
+  }
+}
