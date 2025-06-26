@@ -33,8 +33,7 @@ types.forEach((type) => {
     packerMethod: "BestLongSideFit",
   };
 
-  const lol = "Omni";
-  const path = [`LongRangeAnimation/${lol}/${type[0].toUpperCase()}`];
+  const path = [`LongRangeAnimation/${`Cosmic`}/${type[0].toUpperCase()}`];
 
   let images = [];
 

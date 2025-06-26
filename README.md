@@ -33,3 +33,7 @@ Install Blender - [https://www.blender.org/download/](https://www.blender.org/do
   ```sh
   Desktop/ZerpmonAnimations/logs/checkMissingFiles/images
   ```
+
+## Equipment and Attacks
+
+- Check the relevant folders `README.md` files

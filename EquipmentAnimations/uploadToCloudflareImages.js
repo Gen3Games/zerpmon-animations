@@ -17,7 +17,7 @@ async function uploadToCloudFlareImages() {
         const fileContent = fs.readFileSync(path.join(folderPath, file));
         const formData = new FormData();
         formData.append("file", fileContent, { filename: file });
-        formData.append("id", file);
+        formData.append("id", file.split(".")[0]);
 
         let url =
           "https://api.cloudflare.com/client/v4/accounts/f2183aa9a7cd9634f52e696950d49f06/images/v1";

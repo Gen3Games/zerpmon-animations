@@ -54,7 +54,7 @@ async function renderBlenderAnimation(
 }
 
 async function main(processCount) {
-  const animationsPerProcess = processCount;
+  const animationsPerProcess = 1;
   const errorLogFilePath = path.join(`${baseDir}/logs/all/error.log`);
   const successLogFilePath = path.join(`${baseDir}/logs/all/success.log`);
   const uploadImageToCloudfareErrorLogFilePath = path.join(
@@ -100,20 +100,20 @@ async function main(processCount) {
   ];
 
   //Paths for Prod ENV
-  const pythonScriptPath = `${path.join(
-    process.resourcesPath,
-    "extraResources",
-    "generateImageSequence.py"
-  )}`;
-  const directoryPath = `${path.join(
-    process.resourcesPath,
-    "extraResources",
-    "blenderAnimations/"
-  )}`;
+  // const pythonScriptPath = `${path.join(
+  //   process.resourcesPath,
+  //   "extraResources",
+  //   "generateImageSequence.py"
+  // )}`;
+  // const directoryPath = `${path.join(
+  //   process.resourcesPath,
+  //   "extraResources",
+  //   "blenderAnimations/"
+  // )}`;
 
   //Paths for Dev ENV
-  // const pythonScriptPath = "generateImageSequence.py";
-  // const directoryPath = `blenderAnimations/`;
+  const pythonScriptPath = "generateImageSequence.py";
+  const directoryPath = `blenderAnimations/`;
 
   const zerpmonImagesPath = path.join(`${baseDir}/ZerpmonImages/`);
 
