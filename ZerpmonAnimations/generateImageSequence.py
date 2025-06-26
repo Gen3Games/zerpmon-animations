@@ -4,18 +4,18 @@ import sys
 import subprocess
 from os.path import abspath
 
-bpy.context.scene.render.engine = 'CYCLES'
-bpy.context.preferences.addons['cycles'].preferences.compute_device_type = 'CUDA'
-bpy.context.preferences.addons['cycles'].preferences.refresh_devices()
+# bpy.context.scene.render.engine = 'CYCLES'
+# bpy.context.preferences.addons['cycles'].preferences.compute_device_type = 'CUDA'
+# bpy.context.preferences.addons['cycles'].preferences.refresh_devices()
 
-print(bpy.context.preferences.addons['cycles'])
+# print(bpy.context.preferences.addons['cycles'])
 
-for device in bpy.context.preferences.addons['cycles'].preferences.devices:
-    print(device)
-    if device.type == 'CUDA':
-        device.use = True
+# for device in bpy.context.preferences.addons['cycles'].preferences.devices:
+#     print(device)
+#     if device.type == 'CUDA':
+#         device.use = True
 
-bpy.context.scene.cycles.device = 'GPU'
+# bpy.context.scene.cycles.device = 'GPU'
 
 # Check if there are command line arguments
 if len(sys.argv) > 6:
@@ -33,7 +33,8 @@ if len(sys.argv) > 6:
     node.image = bpy.data.images.load(image_path)
 
     # Specify the output directory
-    output_directory = 'pngSequences/' + animation_name + '/'
+    home_directory = os.path.expanduser( '~' )
+    output_directory = home_directory +'/Desktop/ZerpmonAnimations/pngSequences/' + animation_name + '/'
     print(output_directory);
 
     # Create the output directory if it doesn't exist

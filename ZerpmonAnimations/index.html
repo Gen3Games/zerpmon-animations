@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+    http-equiv="Content-Security-Policy"
+    content="script-src 'self' 'unsafe-inline'"
+  />
+    <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css" />
+  <script src="renderer.js" defer></script>
+  <style>
+    /* Spinner CSS */
+    .spinner {
+      display: none;
+      border: 4px solid rgba(11, 227, 97, 0.3);
+      border-radius: 50%;
+      border-top: 4px solid #32e00b;
+      width: 60px;
+      height: 60px;
+      -webkit-animation: spin 1s linear infinite;
+      animation: spin 1s linear infinite;
+      position: absolute;
+      top: 40%;
+      left: 43%;
+      transform: translate(-50%, -50%);
+    }
+
+    .offline-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.75);
+      color: white;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      z-index: 9999;
+    }
+
+    @-webkit-keyframes spin {
+      0% { -webkit-transform: rotate(0deg); }
+      100% { -webkit-transform: rotate(360deg); }
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+    <title>Zerpmon Animations</title>
+  </head>
+  <body class="bg-teal-700">
+    <div
+      class="max-w-xl m-auto h-screen flex flex-col align-center justify-center"
+    >
+    <div class="flex flex-col w-full items-center justify-center bg-grey-lighter">
+      <label
+        class="w-64 flex flex-col items-center px-4 py-7 bg-white text-gray-500 rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:text-teal-800"
+      >
+        <span class="mt-2 leading-normal">Upload CSV File</span>
+        <input id="csv" type="file" class="hidden" accept=".csv" />
+        </label>
+      <p class="text-white text-lg text-center font-mono mt-6"><strong>File: </strong><span id="filename"></span></p>
+      <button
+        type="submit"
+        id="render-csv"
+        style="display: none;"
+        class="w-80 m-auto flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-teal-500 hover:bg-teal-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+      >
+        Render With CSV
+      </button>
+      </div>
+        <label style="color: black; margin-top: 5%; font-size:x-large;" class="block text-center w-80 mx-auto rounded-md">Or enter the below info</label>
+      <!-- Form -->
+      <form id="zerp-form">
+        <div class="mt-6">
+          <label class="mt-1 block text-white text-center w-80 m-auto py-3 shadow-sm border-gray-300 rounded-md">Starting Zerpmon Number</label>
+          <input
+            type="number"
+            name="start"
+            id="start"
+            class="mt-1 block w-80 m-auto p-3 shadow-sm border-gray-300 rounded-md"
+            placeholder="Start"
+            required
+          />
+        </div>
+
+        <div class="mt-4">
+          <label class="mt-1 block text-white text-center w-80 m-auto py-3 shadow-sm border-gray-300 rounded-md">Ending Zerpmon Number</label>
+          <input
+            type="number"
+            name="end"
+            id="end"
+            class="mt-1 block w-80 m-auto p-3 shadow-sm border-gray-300 rounded-md"
+            placeholder="End"
+            required
+          />
+        </div>
+
+        <!-- Button -->
+        <div class="mt-6">
+          <button
+            type="submit"
+            id="render-number"
+            class="w-80 m-auto flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-teal-500 hover:bg-teal-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            Render
+          </button>
+
+      </form>
+      <div class="mt-4">
+        <label class="mt-1 block text-white text-center w-80 m-auto py-3 shadow-sm border-gray-300 rounded-md">Process Count</label>
+        <input
+          type="number"
+          id="concurrency"
+          class="mt-1 block w-10 m-auto p-3 shadow-sm border-gray-300 rounded-md"
+          required
+        />
+      </div>
+    </div>
+    <div id="spinner" class="spinner"></div>
+    <div id="offline-overlay" class="offline-overlay">
+      <p>No Active Internet Connection</p>
+    </div>
+  
+    <script>
+      function updateOnlineStatus() {
+        const overlay = document.getElementById('offline-overlay');
+        if (navigator.onLine) {
+          overlay.style.display = 'none';
+        } else {
+          overlay.style.display = 'flex';
+        }
+      }
+  
+      window.addEventListener('load', updateOnlineStatus);
+      window.addEventListener('online', updateOnlineStatus);
+      window.addEventListener('offline', updateOnlineStatus);
+    </script>
+  </body>
+</html>

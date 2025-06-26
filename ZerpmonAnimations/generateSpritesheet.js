@@ -2,22 +2,18 @@ const texturePacker = require("free-tex-packer-core");
 const { packAsync } = require("free-tex-packer-core");
 const fs = require("fs");
 const path = require("path");
+const os = require("os");
 
 let scales = [0.5, 0.75, 1];
 
 async function generateSpritesheet(zerpmonName) {
   try {
-    const pngSequencePath = path.resolve(
-      __dirname,
-      `pngSequences/${zerpmonName}`
-    );
-    const spritesheetPath = path.resolve(
-      __dirname,
-      `Spritesheets/${zerpmonName}`
-    );
+    const baseDir = path.join(os.homedir(), "Desktop", "ZerpmonAnimations");
+    const pngSequencePath = path.join(`${baseDir}/pngSequences/${zerpmonName}`);
+    const spritesheetPath = path.join(`${baseDir}/Spritesheets/${zerpmonName}`);
 
     for (let index in scales) {
-      const scale = scales[index]
+      const scale = scales[index];
       let options = {
         textureName: zerpmonName,
         textureFormat: "png", //default
@@ -78,7 +74,9 @@ async function generateSpritesheet(zerpmonName) {
           fs.writeFileSync(
             path.join(
               spritesheetPath,
-              `${item.name.slice(0, -4)}_left_${(options.scale).toString().replace(/\./g, '')}x.png`
+              `${item.name.slice(0, -4)}-left-${options.scale
+                .toString()
+                .replace(/\./g, "")}x-spritesheet.png`
             ),
             item.buffer
           );
@@ -88,7 +86,9 @@ async function generateSpritesheet(zerpmonName) {
           fs.writeFileSync(
             path.join(
               spritesheetPath,
-              `${item.name.slice(0, -5)}_left_${(options.scale).toString().replace(/\./g, '')}x.json`
+              `${item.name.slice(0, -5)}-left-${options.scale
+                .toString()
+                .replace(/\./g, "")}x.json`
             ),
             JSON.stringify(JSON.parse(item.buffer.toString()), null, 2)
           );
@@ -103,7 +103,9 @@ async function generateSpritesheet(zerpmonName) {
           fs.writeFileSync(
             path.join(
               spritesheetPath,
-              `${item.name.slice(0, -4)}_right_${(options.scale).toString().replace(/\./g, '')}x.png`
+              `${item.name.slice(0, -4)}-right-${options.scale
+                .toString()
+                .replace(/\./g, "")}x-spritesheet.png`
             ),
             item.buffer
           );
@@ -113,7 +115,9 @@ async function generateSpritesheet(zerpmonName) {
           fs.writeFileSync(
             path.join(
               spritesheetPath,
-              `${item.name.slice(0, -5)}_right_${(options.scale).toString().replace(/\./g, '')}x.json`
+              `${item.name.slice(0, -5)}-right-${options.scale
+                .toString()
+                .replace(/\./g, "")}x.json`
             ),
             JSON.stringify(JSON.parse(item.buffer.toString()), null, 2)
           );

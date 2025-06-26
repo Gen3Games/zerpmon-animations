@@ -1,23 +1,24 @@
 const fs = require("fs");
 const axios = require("axios");
 const path = require("path");
+const os = require("os");
 
 let types = ["left", "right"];
 let scales = ["05x", "075x", "1x"];
 
 async function uploadToCloudflareR2(zerpmonNumber) {
+  const baseDir = path.join(os.homedir(), "Desktop", "ZerpmonAnimations");
+
   for (const type of types) {
     for (const scale of scales) {
       console.log(`${zerpmonNumber}_${type}_${scale}`);
-      const uploadJsonToCloudfareR2ErrorLogFilePath = path.resolve(
-        __dirname,
-        "./logs/all/error_upload_r2.log"
+      const uploadJsonToCloudfareR2ErrorLogFilePath = path.join(
+        `${baseDir}/logs/all/error_upload_r2.log`
       );
       try {
         // Read JSON file
-        const spriteSheetJsonPath = path.resolve(
-          __dirname,
-          `Spritesheets/${zerpmonNumber}/${zerpmonNumber}_${type}_${scale}.json`
+        const spriteSheetJsonPath = path.join(
+          `${baseDir}/Spritesheets/${zerpmonNumber}/${zerpmonNumber}-${type}-${scale}.json`
         );
         const jsonData = fs.readFileSync(spriteSheetJsonPath);
         // Make PUT request to API endpoint
@@ -28,11 +29,11 @@ async function uploadToCloudflareR2(zerpmonNumber) {
           },
         });
 
-        if(response.status==200){
+        if (response.status == 200) {
           console.log(
             `File uploaded to R2 storage successfully. Response status: ${response.status}`
           );
-        }else{
+        } else {
           fs.appendFileSync(
             uploadJsonToCloudfareR2ErrorLogFilePath,
             `${zerpmonNumber}_${type}_${scale}\n`

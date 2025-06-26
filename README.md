@@ -1,34 +1,39 @@
 # How to generate the zerpmon animations
 
-1. go to the main repo folder<br><br>
+Setup Blender CLI on the machine<br>
 
-2. install dependencies
+Install Blender - [https://www.blender.org/download/](https://www.blender.org/download/)
 
-   ```sh
-   npm i
-   ```
+## [Windows](https://docs.blender.org/manual/en/latest/advanced/command_line/launch/windows.html)
 
-3. go inside ZerpmonAnimations folder<br><br>
+1. Go to the location where Blender is installed</br>
+   (C:\Program Files\Blender Foundation\Blender\blender.exe)
 
-   ```sh
-   cd ZerpmonAnimations
-   ```
+2. Copy the path
 
-4. create folder structure
+3. Add this path to your system `PATH` variable in the machine
+   https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/
 
-   ```sh
-   mkdir -p ZerpmonImages imageChunks logs/all logs/download pngSequences Spritesheets ZerpmonImages
-   ```
+## [MacOS](https://docs.blender.org/manual/en/latest/advanced/command_line/launch/macos.html)
 
-5. add tinifyKey in generateSpritesheet.js
-   
-6. download the nft list
+1. Copy the location where Blender is installed</br>
+   ( /Applications/Blender.app/Contents/MacOS/Blender )
 
-   ```sh
-   node downloadImage.js
-   ```
+2. Add this directory to your machine `PATH`
 
-7. run the animations and save in the r2 and images
-   ```sh
-   node renderAnimations.js
-   ```
+## Rendering
+
+- Open the `ZerpmonAnimations` Application
+
+- Insert the relevant data and Start "Render"
+
+- A folder with the name "ZerpmonAnimations" will appear in your Desktop where you can check the rendered animations
+
+- After process is over check for error files not uploaded in
+  ```sh
+  Desktop/ZerpmonAnimations/logs/checkMissingFiles/images
+  ```
+
+## Equipment and Attacks
+
+- Check the relevant folders `README.md` files

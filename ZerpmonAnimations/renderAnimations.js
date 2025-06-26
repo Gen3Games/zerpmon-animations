@@ -2,9 +2,17 @@ const { spawn } = require("child_process");
 const path = require("path");
 const fs = require("fs").promises;
 const fsO = require("fs");
+const os = require("os");
 const generateSpritesheet = require("./generateSpritesheet");
 const uploadToCloudFlareImages = require("./uploadToCloudflareImages");
 const uploadToCloudFlareR2 = require("./uploadToCloudflareR2");
+
+const blenderExecutable =
+  os.platform() === "win32"
+    ? "blender"
+    : "/Applications/Blender.app/Contents/MacOS/Blender";
+
+const baseDir = path.join(os.homedir(), "Desktop", "ZerpmonAnimations");
 
 async function renderBlenderAnimation(
   blenderFilePath,
@@ -14,7 +22,7 @@ async function renderBlenderAnimation(
   imageName
 ) {
   return new Promise((resolve, reject) => {
-    const renderAnimation = spawn("blender", [
+    const renderAnimation = spawn(blenderExecutable, [
       "-noaudio",
       "-b",
       blenderFilePath,
@@ -45,22 +53,21 @@ async function renderBlenderAnimation(
   });
 }
 
-async function main(animationsPerProcess) {
-  const errorLogFilePath = path.resolve(__dirname, "./logs/all/error.log");
-  const successLogFilePath = path.resolve(__dirname, "./logs/all/success.log");
-  const uploadImageToCloudfareErrorLogFilePath = path.resolve(
-    __dirname,
-    "./logs/all/error_upload_image.log"
+async function main(processCount) {
+  const animationsPerProcess = 1;
+  const errorLogFilePath = path.join(`${baseDir}/logs/all/error.log`);
+  const successLogFilePath = path.join(`${baseDir}/logs/all/success.log`);
+  const uploadImageToCloudfareErrorLogFilePath = path.join(
+    `${baseDir}/logs/all/error_upload_image.log`
   );
-  const uploadJsonToCloudfareR2ErrorLogFilePath = path.resolve(
-    __dirname,
-    "./logs/all/error_upload_r2.log"
+  const uploadJsonToCloudfareR2ErrorLogFilePath = path.join(
+    `${baseDir}/logs/all/error_upload_r2.log`
   );
 
-  LogFilePathForRenderAnimation = path.resolve(__dirname, "./logs/all");
+  LogFilePathForRenderAnimation = path.join(`${baseDir}/logs/all`);
 
-  spritesheetsFilePath = path.resolve(__dirname, "./Spritesheets");
-  pngSequencesFilePath = path.resolve(__dirname, "./pngSequences");
+  spritesheetsFilePath = path.join(`${baseDir}/Spritesheets`);
+  pngSequencesFilePath = path.join(`${baseDir}/pngSequences`);
 
   // create log directories if they don't exist
   if (!fsO.existsSync(LogFilePathForRenderAnimation)) {
@@ -86,18 +93,29 @@ async function main(animationsPerProcess) {
     "ZerpmonCardAppearanceR",
     "ZerpmonCardDestructionL",
     "ZerpmonCardDestructionR",
-    "ZerpmonJiggleL",
-    "ZerpmonJiggleR",
     "ZerpmonDamageL",
     "ZerpmonDamageR",
+    "ZerpmonJiggleL",
+    "ZerpmonJiggleR",
   ];
 
-  // const [animationName, imageFilePath] = process.argv.slice(2);
+  //Paths for Prod ENV
+  // const pythonScriptPath = `${path.join(
+  //   process.resourcesPath,
+  //   "extraResources",
+  //   "generateImageSequence.py"
+  // )}`;
+  // const directoryPath = `${path.join(
+  //   process.resourcesPath,
+  //   "extraResources",
+  //   "blenderAnimations/"
+  // )}`;
+
+  //Paths for Dev ENV
   const pythonScriptPath = "generateImageSequence.py";
   const directoryPath = `blenderAnimations/`;
 
-  // use absolute path for ZerpmonImages/ directory
-  const zerpmonImagesPath = path.resolve(__dirname, "./ZerpmonImages/");
+  const zerpmonImagesPath = path.join(`${baseDir}/ZerpmonImages/`);
 
   try {
     const files = await fs.readdir(zerpmonImagesPath);
@@ -145,12 +163,15 @@ async function main(animationsPerProcess) {
         await fs.appendFile(errorLogFilePath, `${fileName}\n`);
       }
     }
-
     console.log("All scripts completed successfully");
+    return Promise.resolve({
+      result: true,
+      message: "Files successfully uploaded!",
+    });
   } catch (error) {
     console.error(error);
+    return Promise.resolve({ result: false, message: `Error : ${error}` });
   }
 }
 
-const animationsPerProcess = 1;
-main(animationsPerProcess);
+module.exports = main;

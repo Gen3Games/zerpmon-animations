@@ -1,0 +1,35 @@
+{
+  "name": "zerpmon-animations",
+  "version": "1.0.0",
+  "description": "GUI for zerpmon animations",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
+  },
+  "keywords": [],
+  "author": "Zerpmon",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.6.7",
+    "electron-squirrel-startup": "^1.0.1",
+    "free-tex-packer-cli": "^0.3.0",
+    "free-tex-packer-core": "^0.3.4",
+    "node-fetch": "^2.7.0",
+    "toastify-js": "^1.12.0"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^7.4.0",
+    "@electron-forge/maker-deb": "^7.4.0",
+    "@electron-forge/maker-rpm": "^7.4.0",
+    "@electron-forge/maker-squirrel": "^7.4.0",
+    "@electron-forge/maker-zip": "^7.4.0",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.4.0",
+    "@electron-forge/plugin-fuses": "^7.4.0",
+    "@electron/fuses": "^1.8.0",
+    "compress-images": "^2.0.5",
+    "electron": "^20.2.0",
+    "wrangler": "^3.28.2"
+  }
+}
