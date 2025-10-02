@@ -24,12 +24,11 @@ async function uploadToCloudFlareImages(zerpmonNumber) {
         "id",
         `${zerpmonNumber}-${type}-${scale}-spritesheet.png`
       );
-      let url =
-        "https://api.cloudflare.com/client/v4/accounts/f2183aa9a7cd9634f52e696950d49f06/images/v1";
+      let url = `https://api.cloudflare.com/client/v4/accounts/${process.env.CLOUDFLARE_ACCOUNT_ID}/images/v1`;
       let options = {
         method: "POST",
         headers: {
-          Authorization: "Bearer API-KEY",
+          Authorization: `Bearer ${process.env.CLOUDFLARE_IMAGES_KEY}`,
         },
         body: formData,
       };

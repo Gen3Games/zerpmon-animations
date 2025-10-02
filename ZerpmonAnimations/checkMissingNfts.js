@@ -30,7 +30,7 @@ async function checkMissingNfts(chunkfilePath) {
 
     const apiUrl = "https://preview.zerpmon.world/api/zerpmons";
     const headers = {
-      Authorization: "Bearer aSxZ8Q1KkuTV8KTLUzI9jdAciGLCgHcI",
+      Authorization: `Bearer ${process.env.ZERPMON_API_KEY}`,
     };
 
     const response = await fetch(apiUrl, { headers });
