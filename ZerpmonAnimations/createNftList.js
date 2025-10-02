@@ -34,7 +34,7 @@ const apiUrl = "https://app.zerpmon.world/api/zerpmons";
 const fileName = "nftList.log";
 const destinationFile = path.resolve(__dirname, fileName);
 const headers = {
-  Authorization: "Bearer aSxZ8Q1KkuTV8KTLUzI9jdAciGLCgHcI",
+  Authorization: process.env.CLOUDFLARE_IMAGES_KEY,
 };
 
 devideImagesToChunks(apiUrl, destinationFile, headers);

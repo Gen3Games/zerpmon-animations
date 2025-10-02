@@ -16,7 +16,7 @@ let url =
 let options = {
   method: "POST",
   headers: {
-    Authorization: "Bearer API-KEY",
+    Authorization: process.env.ZERPMON_API_KEY,
   },
   body: formData,
 };
