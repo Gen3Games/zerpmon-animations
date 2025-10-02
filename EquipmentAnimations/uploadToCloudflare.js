@@ -16,7 +16,7 @@ let url =
 let options = {
   method: "POST",
   headers: {
-    Authorization: process.env.CLOUDFLARE_IMAGES_KEY,
+    Authorization: `Bearer ${process.env.CLOUDFLARE_IMAGES_KEY}`,
   },
   body: formData,
 };
