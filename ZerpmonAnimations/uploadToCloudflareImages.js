@@ -21,7 +21,7 @@ async function uploadToCloudFlareImages(zerpmonName) {
   let options = {
     method: "POST",
     headers: {
-      Authorization: "Bearer jDVp8XqiWkFijaCF55gEmqYGnjrtt1bXSmSFFzH6",
+      Authorization: "Bearer API-KEY",
     },
     body: formData,
   };
