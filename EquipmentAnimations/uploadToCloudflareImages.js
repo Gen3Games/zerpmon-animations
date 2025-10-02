@@ -25,7 +25,7 @@ async function uploadToCloudFlareImages() {
         let options = {
           method: "POST",
           headers: {
-            Authorization: "Bearer jDVp8XqiWkFijaCF55gEmqYGnjrtt1bXSmSFFzH6",
+            Authorization: process.env.CLOUDFLARE_IMAGES_KEY,
           },
           body: formData,
         };
