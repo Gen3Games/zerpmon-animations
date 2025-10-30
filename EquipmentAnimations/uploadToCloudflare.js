@@ -1,6 +1,8 @@
 const FormData = require("form-data");
 const fetch = require("node-fetch");
 const fs = require("fs");
+const dotenv = require("dotenv");
+dotenv.config();
 
 const formData = new FormData();
 const fileContent = fs.readFileSync(

@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^17.2.3",
     "free-tex-packer-cli": "^0.3.0",
     "free-tex-packer-core": "^0.3.4",
     "gifsicle": "^5.2.1",

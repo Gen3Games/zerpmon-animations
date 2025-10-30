@@ -2,6 +2,8 @@ const FormData = require("form-data");
 const fetch = require("node-fetch");
 const fs = require("fs");
 const path = require("path");
+const dotenv = require("dotenv");
+dotenv.config();
 
 async function uploadToCloudFlareImages() {
   const folderPath = "Equipment_Dim_V2";
@@ -32,6 +34,10 @@ async function uploadToCloudFlareImages() {
         try {
           const response = await fetch(url, options);
           const json = await response.json();
+
+          if (!response.ok) {
+            throw new Error(json.errors[0].message);
+          }
           console.log(`Uploaded ${file} to Cloudflare Images Successfully`);
         } catch (err) {
           console.error(`Error uploading ${file} to Cloudflare Images:`, err);

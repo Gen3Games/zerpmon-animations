@@ -3,6 +3,8 @@ const fetch = require("node-fetch");
 const fs = require("fs");
 const path = require("path");
 const os = require("os");
+const dotenv = require("dotenv");
+dotenv.config();
 
 let types = ["left", "right"];
 let scales = ["05x", "075x", "1x"];
