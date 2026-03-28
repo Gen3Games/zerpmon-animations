@@ -24,54 +24,22 @@ https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/
 
 2. Add this directory to your machine `PATH`
 
+## Creating EquipmentAnimations app setup
+
+1. Run `npm install` in the `EquipmentAnimations` directory
+
+2. Run `npm run make` to create application, it will create the `Equipment Animations` app in the `out` directory
+
 ## Rendering Equipment Animation
 
-// Left Side
-Open the `EquipmentAppearenceL.blend` file in the `blenderAnimations` folder and add the relevant equipment png into first node in the `Shader Nodetree` and render the animation. Frame names should be in the format,
+1. Run `npm run make` to create application, it will create the `Equipment Animations` app in the `out` directory
 
-```
-EquipAppearL0001.png
-EquipAppearL0002.png
-EquipAppearL0003.png
-```
+2. Open the `Equipment Animations` app
 
-// Right Side
-Open the `EquipmentAppearenceR.blend` file in the `blenderAnimations` folder and add the relevant equipment png into first node in the `Shader Nodetree` and render the animation into the same folder as above. Frame names should be in the format,
+3. Upload full art PNGs of the equipment and click `Render`
 
-```
-EquipAppearL0001.png
-EquipAppearL0002.png
-EquipAppearL0003.png
-```
+4. The app will create a `EquipmentAnimations` folder in the Desktop and start rendering the animations.
 
-- Change the `spritesheetPath` variable in the `generateSpritesheet.js` file if needed so that it is directed to the parent directory of the png sequences
+5. Once the animations are done, the app will create a `equipment-spritesheet.json` file in the `EquipmentAnimations` directory.
 
-- Run the `generateSpritesheet.js` file by `node generateSpritesheet.js {textureName}`
-
-```
-node generateSpritesheet.js water-equipment-spritesheet
-```
-
-- This will render the spritesheet for that equipment
-
-- Upload the spritesheet png's to cloudflare images and include the url with `w=3400` in the `equipment-spritesheets.json` file in the Zerpmon repo.
-
-- Upload the spritesheet json files to the R2 Object storage in cloudflare in the `zerpmon/attack-spritesheet-scaled-json/` bucket, and include the url in `equipment-spritesheets.json` file in the Zerpmon repo.
-
-## Rendering Dim Equipment
-
-// Left Side
-Open the `DimEquipmentL.blend` file in the `blenderAnimations` folder and add the relevant equipment png into first node in the `Shader Nodetree` and render the animation. Frame name should be in the format,
-
-```
-{EquipmentName}DeactivatedL.png
-```
-
-// Right Side
-Open the `DimEquipmentR.blend` file in the `blenderAnimations` folder and add the relevant equipment png into first node in the `Shader Nodetree` and render the animation. Frame name should be in the format,
-
-```
-{EquipmentName}DeactivatedR.png
-```
-
-- Upload the png to cloudflare images and include the url with `w=3400` in the `equipment-spritesheets.json` file into `deactivatedL_url` and `deactivatedR_url` field in the Zerpmon repo.
+6. <span style="color: red;">Copy the contents of the `equipment-spritesheet.json` file and update the [`equipment-spritesheet.json`](https://github.com/Gen3Games/zerpmon-web-app/blob/main/battleGameplay/utils/equipment-spritesheet.json) file of the Zerpmon Webapp Repository by pasting the contents.</span>

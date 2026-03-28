@@ -1,27 +1,38 @@
 {
-  "name": "spritesheet",
+  "name": "equipment-animations",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "GUI for equipment animations",
+  "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "dotenvx run -f .env -- electron-forge make"
   },
   "keywords": [],
-  "author": "",
+  "author": "Zerpmon",
   "license": "ISC",
   "dependencies": {
+    "@dotenvx/dotenvx": "^1.57.2",
+    "axios": "^1.6.7",
     "dotenv": "^17.2.3",
+    "electron-squirrel-startup": "^1.0.1",
     "free-tex-packer-cli": "^0.3.0",
     "free-tex-packer-core": "^0.3.4",
-    "gifsicle": "^5.2.1",
-    "imagemin": "^7.0.0",
-    "imagemin-optipng": "^8.0.0",
-    "imagemin-pngquant": "^7.0.0",
     "node-fetch": "^2.7.0",
-    "optipng-bin": "^9.0.0",
-    "sharp": "^0.33.2"
+    "toastify-js": "^1.12.0",
+    "tree-kill": "^1.2.2"
   },
   "devDependencies": {
-    "compress-images": "^2.0.5"
+    "@electron-forge/cli": "^7.4.0",
+    "@electron-forge/maker-deb": "^7.4.0",
+    "@electron-forge/maker-rpm": "^7.4.0",
+    "@electron-forge/maker-squirrel": "^7.4.0",
+    "@electron-forge/maker-zip": "^7.4.0",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.4.0",
+    "@electron-forge/plugin-fuses": "^7.4.0",
+    "@electron/fuses": "^1.8.0",
+    "compress-images": "^2.0.5",
+    "electron": "^20.2.0",
+    "wrangler": "^3.28.2"
   }
 }

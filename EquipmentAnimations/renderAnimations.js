@@ -1,75 +1,171 @@
-const { spawn } = require('child_process');
-const fs = require('fs').promises;
+const { spawn } = require("child_process");
+const path = require("path");
+const fs = require("fs").promises;
+const fsO = require("fs");
+const os = require("os");
+const generateSpritesheet = require("./generateSpritesheet");
+const uploadToCloudFlareImages = require("./uploadToCloudflareImages");
+const uploadToCloudFlareR2 = require("./uploadToCloudflareR2");
+const { createJsonFile } = require("./createJsonFile");
 
-async function runPythonScript(blenderFilePath, pythonScriptPath, imageFilePath, animationName, imageName) {
-    return new Promise((resolve, reject) => {
-        const renderAnimation = spawn('blender', ['-b', blenderFilePath, '-P', pythonScriptPath, imageFilePath, animationName, imageName]);
+const blenderExecutable =
+  os.platform() === "win32"
+    ? "blender"
+    : "/Applications/Blender.app/Contents/MacOS/Blender";
 
-        renderAnimation.stdout.on('data', (data) => {
-            console.log(`${data}`);
-        });
+const baseDir = path.join(os.homedir(), "Desktop", "EquipmentAnimations");
 
-        renderAnimation.stderr.on('data', (data) => {
-            console.error(`Python script ERROR: ${data}`);
-        });
+async function renderBlenderAnimation(
+  blenderFilePath,
+  pythonScriptPath,
+  imageFilePath,
+  animationName,
+  imageName,
+) {
+  return new Promise((resolve, reject) => {
+    const renderAnimation = spawn(blenderExecutable, [
+      "-noaudio",
+      "-b",
+      blenderFilePath,
+      "-E",
+      "CYCLES",
+      "-P",
+      pythonScriptPath,
+      imageFilePath,
+      animationName,
+      imageName,
+    ]);
 
-        renderAnimation.on('close', (code) => {
-            if (code !== 1) {
-                reject(`Error executing Python script. Exit code: ${code}`);
-            } else {
-                resolve();
-            }
-        });
+    renderAnimation.stdout.on("data", (data) => {
+      console.log(`${data}`);
     });
-}
 
-async function runNodeScript(nodeScriptPath, textureName) {
-    return new Promise((resolve, reject) => {
-        const renderSpritesheet = spawn('node', [nodeScriptPath, textureName]);
-
-        renderSpritesheet.stdout.on('data', (nodeData) => {
-            console.log(`${nodeData}`);
-        });
-
-        renderSpritesheet.stderr.on('data', (nodeErrorData) => {
-            console.error(`Node.js script ERROR: ${nodeErrorData}`);
-        });
-
-        renderSpritesheet.on('close', (nodeCode) => {
-            if (nodeCode !== 0) {
-                reject(`Error executing Node.js script. Exit code: ${nodeCode}`);
-            } else {
-                resolve();
-            }
-        });
+    renderAnimation.stderr.on("data", (data) => {
+      console.error(`Python script ERROR: ${data}`);
     });
+
+    renderAnimation.on("close", (code) => {
+      if (code !== 1) {
+        reject(`Error executing Python script. Exit code: ${code}`);
+      } else {
+        resolve();
+      }
+    });
+  });
 }
 
 async function main() {
-    if (process.argv.slice(2).length < 2) {
-        console.error('Usage: node renderAnimations.js <animationName> <imagePath>');
-        console.error('Usage Eg : node renderAnimations.js playerWalking ./player.png');
-        process.exit(1);
-    }
+  const animationsPerProcess = 1;
+  const errorLogFilePath = path.join(`${baseDir}/logs/all/error.log`);
+  const successLogFilePath = path.join(`${baseDir}/logs/all/success.log`);
+  const uploadImageToCloudfareErrorLogFilePath = path.join(
+    `${baseDir}/logs/all/error_upload_image.log`,
+  );
+  const uploadJsonToCloudfareR2ErrorLogFilePath = path.join(
+    `${baseDir}/logs/all/error_upload_r2.log`,
+  );
 
-    const animationFiles = ["EquipmentAppearanceL"]
-    const [animationName, imageFilePath] = process.argv.slice(2);
-    const pythonScriptPath = 'generateImage.py';
-    const directoryPath = `blenderAnimations/`;
+  LogFilePathForRenderAnimation = path.join(`${baseDir}/logs/all`);
 
-    try {
-        const files = await fs.readdir(directoryPath);
+  spritesheetsFilePath = path.join(`${baseDir}/Spritesheets`);
+  pngSequencesFilePath = path.join(`${baseDir}/pngSequences`);
 
-        for (const animation of animationFiles) {
-            const filePath = `${directoryPath}${animation}.blend`;
-            await runPythonScript(filePath, pythonScriptPath, imageFilePath, animationName, animation);
+  // create log directories if they don't exist
+  if (!fsO.existsSync(LogFilePathForRenderAnimation)) {
+    await fs.mkdir(LogFilePathForRenderAnimation, { recursive: true });
+  }
+
+  // create directories if they don't exist
+  if (!fsO.existsSync(spritesheetsFilePath)) {
+    await fs.mkdir(spritesheetsFilePath);
+  }
+
+  if (!fsO.existsSync(pngSequencesFilePath)) {
+    await fs.mkdir(pngSequencesFilePath);
+  }
+
+  await fs.open(errorLogFilePath, "w");
+  await fs.open(successLogFilePath, "w");
+  await fs.open(uploadImageToCloudfareErrorLogFilePath, "w");
+  await fs.open(uploadJsonToCloudfareR2ErrorLogFilePath, "w");
+
+  const blenderAnimationFiles = ["EquipAppearL", "EquipAppearR"];
+
+  //Paths for Prod ENV
+  const pythonScriptPath = `${path.join(
+    process.resourcesPath,
+    "extraResources",
+    "generateImageSequence.py",
+  )}`;
+  const directoryPath = `${path.join(
+    process.resourcesPath,
+    "extraResources",
+    "blenderAnimations/",
+  )}`;
+
+  //Paths for Dev ENV
+  // const pythonScriptPath = "generateImageSequence.py";
+  // const directoryPath = `blenderAnimations/`;
+
+  const equipmentImagesPath = path.join(`${baseDir}/EquipmentImages/`);
+
+  try {
+    const files = await fs.readdir(equipmentImagesPath);
+
+    for (const file of files) {
+      const fileName = file.slice(0, -4);
+      try {
+        for (
+          let i = 0;
+          i < blenderAnimationFiles.length;
+          i += animationsPerProcess
+        ) {
+          const promises = [];
+          const fileSlice = blenderAnimationFiles.slice(
+            i,
+            i + animationsPerProcess,
+          );
+          for (const animationFile of fileSlice) {
+            const filePath = `${directoryPath}${animationFile}.blend`;
+            promises.push(
+              renderBlenderAnimation(
+                filePath,
+                pythonScriptPath,
+                path.resolve(equipmentImagesPath, file),
+                fileName,
+                animationFile,
+              ),
+            );
+          }
+          await Promise.all(promises);
         }
+        await generateSpritesheet(fileName);
 
-        await runNodeScript('generateSpritesheet.js', animationName);
-        console.log('All scripts completed successfully');
-    } catch (error) {
-        console.error(error);
+        await uploadToCloudFlareImages(fileName);
+        console.log(
+          `Images uploaded successfully for ${fileName} to Cloudflare.`,
+        );
+
+        await uploadToCloudFlareR2(fileName);
+        console.log(`R2 uploaded successfully for ${fileName} to Cloudflare.`);
+
+        await fs.appendFile(successLogFilePath, `${fileName}\n`);
+      } catch (error) {
+        console.error(`Error processing file ${fileName}: ${error}`);
+        await fs.appendFile(errorLogFilePath, `${fileName}\n`);
+      }
     }
+
+    await createJsonFile(files);
+    console.log("All scripts completed successfully");
+    return Promise.resolve({
+      result: true,
+      message: "Files successfully uploaded!",
+    });
+  } catch (error) {
+    console.error(error);
+    return Promise.resolve({ result: false, message: `Error : ${error}` });
+  }
 }
 
-main();
+module.exports = main;

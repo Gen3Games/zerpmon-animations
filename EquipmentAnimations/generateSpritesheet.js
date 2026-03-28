@@ -1,78 +1,91 @@
-let texturePacker = require("free-tex-packer-core");
-const fs = require('fs');
-const path = require('path');
+const { packAsync } = require("free-tex-packer-core");
+const fs = require("fs");
+const path = require("path");
+const os = require("os");
+const { toCamelCase } = require("./createJsonFile");
 
-const args = process.argv.slice(2);
+async function generateSpritesheet(equipmentName) {
+  try {
+    const baseDir = path.join(os.homedir(), "Desktop", "EquipmentAnimations");
+    const pngSequencePath = path.join(
+      `${baseDir}/pngSequences/${equipmentName}`,
+    );
+    const spritesheetPath = path.join(
+      `${baseDir}/Spritesheets/${equipmentName}`,
+    );
 
-if (args.length < 1) {
-    console.error('Usage: node generateSpritesheet.js <textureName>');
-    process.exit(1);
-}
+    let options = {
+      // textureName: "equipAppear",
+      textureName: equipmentName,
+      textureFormat: "png", //defualt
+      exporter: "Phaser3",
+      removeFileExtension: false, //default
+      prependFolderName: false, //defualt
+      base64Export: false, //defualt
+      tinify: true, //defualt
+      tinifyKey: "HgMHbnBKj5x2Fq7GH2TPcKJSRDwbMdy9", //defualt
+      scale: 1, //defualt
+      // filter: none //default
+      width: 3400,
+      height: 3400,
+      fixedSize: false, //default
+      powerOfTwo: false, //default
+      padding: 0, //default
+      extrude: 0, //default
+      allowRotation: false, //default
+      allowTrim: true, //default
+      //trimMode: trim,   //default
+      alphaThreshold: 16,
+      detectIdentical: true, //default
+      packer: "MaxRectsBin",
+      packerMethod: "BestLongSideFit",
+    };
 
-const textureName = args[0];
-const spritesheetPath = path.resolve(`${textureName}/${textureName}`);
+    let images = [];
 
-let options = {
-    // textureName: "equipAppear",
-    textureName: textureName,
-    textureFormat: "png",   //defualt
-    exporter: "Phaser3",
-    removeFileExtension: false, //default
-    prependFolderName: false,   //defualt
-    base64Export: false,    //defualt
-    tinify: true,  //defualt
-    tinifyKey: "mZmdM3QSN180BlBXDBdkh5jK5Z1LsQ7J",  //defualt
-    scale: 1,   //defualt
-    // filter: none //default
-    width: 3400,
-    height: 3400,
-    fixedSize: false,   //default
-    powerOfTwo: false,  //default
-    padding: 0,     //default
-    extrude: 0,     //default
-    allowRotation: false,   //default
-    allowTrim: true,    //default
-    //trimMode: trim,   //default
-    alphaThreshold: 16,
-    detectIdentical: true,  //default
-    packer: "MaxRectsBin",
-    packerMethod: "BestLongSideFit",
-};
+    const files = fs.readdirSync(pngSequencePath);
 
-let images = [];
+    for (const file of files) {
+      const filePath = path.join(pngSequencePath, file);
+      const isFile = fs.statSync(filePath).isFile();
 
-const files = fs.readdirSync(textureName);
-
-for (const file of files) {
-    const filePath = `${textureName}/${file}`;
-
-    // Check if the item is a file (not a directory)
-    const isFile = fs.statSync(filePath).isFile();
-
-    if (isFile) {
+      if (isFile) {
         images.push({ path: filePath, contents: fs.readFileSync(filePath) });
+      }
     }
+
+    if (!fs.existsSync(spritesheetPath)) {
+      fs.mkdirSync(spritesheetPath, { recursive: true });
+    }
+
+    const packedFiles = await packAsync(images, options);
+
+    for (let item of packedFiles) {
+      // Writing PNG file
+      if (item.name.endsWith(".png")) {
+        fs.writeFileSync(
+          path.join(
+            spritesheetPath,
+            `${toCamelCase(item.name.split(".")[0])}-equipment-spritesheet.png`,
+          ),
+          item.buffer,
+        );
+        console.log(`${item.name} written successfully.`);
+      } // Writing JSON file
+      else if (item.name.endsWith(".json")) {
+        fs.writeFileSync(
+          path.join(
+            spritesheetPath,
+            `${toCamelCase(item.name.split(".")[0])}-equipment-spritesheet.json`,
+          ),
+          JSON.stringify(JSON.parse(item.buffer.toString()), null, 2),
+        );
+        console.log(`${item.name} written successfully.`);
+      }
+    }
+  } catch (error) {
+    throw "error in generate spritesheet" + error;
+  }
 }
 
-if (!fs.existsSync(spritesheetPath)) {
-    fs.mkdirSync(spritesheetPath, { recursive: true });
-}
-
-texturePacker(images, options, (files, error) => {
-    if (error) {
-        console.error('Packaging failed', error);
-    } else {  
-        for (let item of files) {
-            // Writing PNG file
-            if (item.name.endsWith('.png')) {
-                fs.writeFileSync(`${spritesheetPath}/${item.name}`, item.buffer);
-                console.log(`${item.name} written successfully.`);
-            }
-            // Writing JSON file
-            else if (item.name.endsWith('.json')) {
-                fs.writeFileSync(`${spritesheetPath}/${item.name}`, JSON.stringify(JSON.parse(item.buffer.toString()), null, 2));
-                console.log(`${item.name} written successfully.`);
-            }
-        }
-    }
-});
+module.exports = generateSpritesheet;

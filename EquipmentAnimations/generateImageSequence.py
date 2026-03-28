@@ -2,20 +2,23 @@ import bpy
 import os
 import sys
 import subprocess
+from os.path import abspath
 
 # Check if there are command line arguments
-if len(sys.argv) > 5:
+if len(sys.argv) > 6:
     # Get the image path from the command line arguments
-    image_path = sys.argv[5]
-    animation_name = sys.argv[6]
-    image_name = sys.argv[7]
+    image_path = sys.argv[8]
+    animation_name = sys.argv[9]
+    image_name = sys.argv[10]
 
     # Find the node and set the image
-    node = bpy.data.materials['EqupL'].node_tree.nodes["Image Texture"]
+    node = bpy.data.materials['equipment appearance'].node_tree.nodes["Image Texture.001"]
     node.image = bpy.data.images.load(image_path)
 
     # Specify the output directory
-    output_directory = animation_name + '/'
+    home_directory = os.path.expanduser( '~' )
+    output_directory = home_directory +'/Desktop/EquipmentAnimations/pngSequences/' + animation_name + '/'
+    print(output_directory)
 
     # Create the output directory if it doesn't exist
     os.makedirs(output_directory, exist_ok=True)
@@ -24,8 +27,9 @@ if len(sys.argv) > 5:
     bpy.context.scene.render.image_settings.file_format = 'PNG'
 
     # Set the output directory in the render settings
-    bpy.context.scene.render.filepath = os.path.join(output_directory, image_name)
-
+    bpy.context.scene.render.filepath = abspath(os.path.join(output_directory, image_name))
+    print(bpy.context.scene.render.filepath)
+    
     # Render animation
     bpy.ops.render.render(animation=True)
 
