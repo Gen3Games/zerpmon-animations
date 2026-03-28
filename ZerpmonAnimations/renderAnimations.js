@@ -19,7 +19,7 @@ async function renderBlenderAnimation(
   pythonScriptPath,
   imageFilePath,
   animationName,
-  imageName
+  imageName,
 ) {
   return new Promise((resolve, reject) => {
     const renderAnimation = spawn(blenderExecutable, [
@@ -58,10 +58,10 @@ async function main(processCount) {
   const errorLogFilePath = path.join(`${baseDir}/logs/all/error.log`);
   const successLogFilePath = path.join(`${baseDir}/logs/all/success.log`);
   const uploadImageToCloudfareErrorLogFilePath = path.join(
-    `${baseDir}/logs/all/error_upload_image.log`
+    `${baseDir}/logs/all/error_upload_image.log`,
   );
   const uploadJsonToCloudfareR2ErrorLogFilePath = path.join(
-    `${baseDir}/logs/all/error_upload_r2.log`
+    `${baseDir}/logs/all/error_upload_r2.log`,
   );
 
   LogFilePathForRenderAnimation = path.join(`${baseDir}/logs/all`);
@@ -100,20 +100,20 @@ async function main(processCount) {
   ];
 
   //Paths for Prod ENV
-  // const pythonScriptPath = `${path.join(
-  //   process.resourcesPath,
-  //   "extraResources",
-  //   "generateImageSequence.py"
-  // )}`;
-  // const directoryPath = `${path.join(
-  //   process.resourcesPath,
-  //   "extraResources",
-  //   "blenderAnimations/"
-  // )}`;
+  const pythonScriptPath = `${path.join(
+    process.resourcesPath,
+    "extraResources",
+    "generateImageSequence.py",
+  )}`;
+  const directoryPath = `${path.join(
+    process.resourcesPath,
+    "extraResources",
+    "blenderAnimations/",
+  )}`;
 
   //Paths for Dev ENV
-  const pythonScriptPath = "generateImageSequence.py";
-  const directoryPath = `blenderAnimations/`;
+  // const pythonScriptPath = "generateImageSequence.py";
+  // const directoryPath = `blenderAnimations/`;
 
   const zerpmonImagesPath = path.join(`${baseDir}/ZerpmonImages/`);
 
@@ -131,7 +131,7 @@ async function main(processCount) {
           const promises = [];
           const fileSlice = blenderAnimationFiles.slice(
             i,
-            i + animationsPerProcess
+            i + animationsPerProcess,
           );
           for (const animationFile of fileSlice) {
             const filePath = `${directoryPath}${animationFile}.blend`;
@@ -141,8 +141,8 @@ async function main(processCount) {
                 pythonScriptPath,
                 path.resolve(zerpmonImagesPath, file),
                 fileName,
-                animationFile
-              )
+                animationFile,
+              ),
             );
           }
           await Promise.all(promises);
@@ -151,7 +151,7 @@ async function main(processCount) {
 
         await uploadToCloudFlareImages(fileName);
         console.log(
-          `Images uploaded successfully for ${fileName} to Cloudflare.`
+          `Images uploaded successfully for ${fileName} to Cloudflare.`,
         );
 
         await uploadToCloudFlareR2(fileName);
